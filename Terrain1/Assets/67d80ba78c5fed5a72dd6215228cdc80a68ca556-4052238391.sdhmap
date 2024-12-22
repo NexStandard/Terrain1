@@ -1,0 +1,15 @@
+!HeightmapAsset
+Id: 449ee1dd-6e8a-49e2-9b1b-59c434b64077
+SerializedVersion: {Stride: 3.0.0.0}
+Tags: []
+Source: !file ../Resources/67d80ba78c5fed5a72dd6215228cdc80a68ca556-4052238391.jpeg
+HeightConversionParameters: !Stride.Assets.Physics.ShortHeightmapHeightConversionParameters,Stride.Assets
+    HeightRange: {X: -10.0, Y: 10.0}
+    HeightScaleCalculator: !Stride.Physics.HeightScaleCalculator,Stride.Physics {}
+Resize:
+    Enabled: false
+    Size: {X: 1024, Y: 1024}
+ScaleToHeightRange: true
+FloatingPointComponentRange: {X: -1.0, Y: 1.0}
+IsSymmetricShortComponent: false
+sRGB sampling: false
