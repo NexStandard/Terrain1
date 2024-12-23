@@ -11,13 +11,13 @@ using System.Collections.Generic;
 namespace Terrain;
 [Display("Terrain", Expand = ExpandRule.Once)]
 [DefaultEntityComponentRenderer(typeof(TerrainGridProcessor))]
-[(typeof(AnimatorProcessor))]
+[DefaultEntityComponentProcessor(typeof(AnimatorProcessor))]
 public class TerrainGrid : StartupScript
 {
-    [DataMemberRange(1, int.MaxValue)]
+    [DataMemberRange(1, 1024)]
     public int Size { get; init; } = 100;
 
-    [DataMemberRange(1, int.MaxValue)]
+    [DataMemberRange(1, 1024)]
     public int CellSize { get; init; } = 10;
 
     /// <summary>
@@ -33,7 +33,7 @@ public class TerrainGrid : StartupScript
     public Material Material { get; set; }
 
     public Dictionary<Int2, float> VertexHeights { get; } = new();
-
+    public HashSet<Int2> ModifiedVertices = new();
     public VertexPositionNormalTexture[] GenerateVertices()
     {
         var vertexCount = (Size + 1) * (Size + 1);
@@ -70,7 +70,7 @@ public class TerrainGrid : StartupScript
     public int[] GenerateIndices()
     {
         var quadCount = Size * Size;
-        var indices = new int[quadCount * 6]; // 6 indices per quad (2 triangles)
+        var indices = new int[quadCount * 6];
 
         var index = 0;
         for (var row = 0; row < Size; row++)
@@ -86,25 +86,20 @@ public class TerrainGrid : StartupScript
                 // Determine the winding for this quad (alternates based on (row + col) % 2)
                 if ((row + col) % 2 == 0)
                 {
-                    // First triangle: Top-left → Bottom-right → Top-right (clockwise winding)
                     indices[index++] = topRight;
                     indices[index++] = bottomRight;
                     indices[index++] = topLeft;
 
-                    // Second triangle: Bottom-left → Top-left → Bottom-right (counterclockwise winding)
                     indices[index++] = bottomLeft;
                     indices[index++] = topLeft;
                     indices[index++] = bottomRight;
                 }
                 else
                 {
-                    // For "odd" quads, we want the top-left triangle to be CCW, so:
-                    // First triangle: Top-left → Top-right → Bottom-left (counterclockwise winding)
                     indices[index++] = topLeft;
                     indices[index++] = topRight;
                     indices[index++] = bottomLeft;
 
-                    // Second triangle: Bottom-left → Top-right → Bottom-right (clockwise winding)
                     indices[index++] = bottomLeft;
                     indices[index++] = topRight;
                     indices[index++] = bottomRight;
@@ -118,6 +113,7 @@ public class TerrainGrid : StartupScript
     {
         var key = new Int2(col, row);
         VertexHeights[key] = height;
+        ModifiedVertices.Add(key);
     }
     public float GetVertexHeight(int col, int row)
     {
@@ -191,7 +187,7 @@ public class TerrainGrid : StartupScript
 
         return (w1 * p1.Y) + (w2 * p2.Y) + (w3 * p3.Y);
     }
-
+    #region Testing
     private static readonly Random RandomGenerator = new Random();
     public bool Randomize { get; set; }
     public bool Flatten { get; set; }
@@ -223,4 +219,5 @@ public class TerrainGrid : StartupScript
             }
         }
     }
+    #endregion
 }
