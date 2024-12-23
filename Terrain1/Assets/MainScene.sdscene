@@ -21,16 +21,14 @@ Hierarchy:
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
-                    5e81e6efc24bf7f7b577383a56b68032: !Terrain.TerrainGrid,Terrain
-                        Id: 7b0aae45-7c04-4840-b24d-38893f7aff30
-                        Size: 256
-                        CellSize: 1
+                    449f6a33a38702c8587fc43227f8ed08: !Terrain.TerrainGrid,Terrain
+                        Id: c982112a-b678-4e0a-bfd5-bc1f73b5d812
+                        Size: 100
+                        CellSize: 10
                         Material: null
                         VertexHeights: {}
-                        Randomize: true
-                        Flatten: true
-                    74612a0f4aa2f4042ae3c707420226b0: !AnimatorComponent
-                        Id: 732a5020-e777-43b8-93e0-a829a50936e2
+                        Randomize: false
+                        Flatten: false
         -   Entity:
                 Id: 90651f32-f178-4f7f-bf68-96c2da02b041
                 Name: Camera

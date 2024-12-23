@@ -11,6 +11,7 @@ using System.Collections.Generic;
 namespace Terrain;
 [Display("Terrain", Expand = ExpandRule.Once)]
 [DefaultEntityComponentRenderer(typeof(TerrainGridProcessor))]
+[(typeof(AnimatorProcessor))]
 public class TerrainGrid : StartupScript
 {
     [DataMemberRange(1, int.MaxValue)]

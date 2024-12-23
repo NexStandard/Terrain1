@@ -7,8 +7,10 @@ using System;
 
 namespace Terrain;
 
-public class AnimatorProcessor : EntityProcessor<TerrainGrid>
+public class AnimatorProcessor : EntityProcessor<TerrainGrid>, IEntityComponentRenderProcessor
 {
+    public VisibilityGroup VisibilityGroup { get; set; }
+
     public AnimatorProcessor() : base(typeof(TerrainGrid)) { }
     public override void Draw(RenderContext context)
     {
@@ -52,7 +54,7 @@ public class AnimatorProcessor : EntityProcessor<TerrainGrid>
         // Find the corresponding grid cell
         var col = (int)(hitPoint.X / terrain.CellSize);
         var row = (int)(hitPoint.Z / terrain.CellSize);
-
+ 
         // Modify a square region around the clicked point
         for (var r = row - radius; r <= row + radius; r++)
         {
@@ -65,9 +67,6 @@ public class AnimatorProcessor : EntityProcessor<TerrainGrid>
                 }
             }
         }
-
-        // Update the terrain mesh
-        // terrain.UpdateMesh();
     }
 
     private bool IntersectRayWithTerrain(Vector3 rayOrigin, Vector3 rayDirection, TerrainGrid terrain, out Vector3 terrainPoint)
