@@ -7,18 +7,26 @@ using Stride.Graphics;
 using Stride.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Terrain;
 [Display("Terrain", Expand = ExpandRule.Once)]
 [DefaultEntityComponentRenderer(typeof(TerrainGridProcessor))]
-[DefaultEntityComponentProcessor(typeof(AnimatorProcessor))]
 public class TerrainGrid : StartupScript
 {
-    [DataMemberRange(1, 1024)]
-    public int Size { get; init; } = 100;
+
+    [Display("Select Option")]
+    [DefaultValue("Option1")]
+    public string SelectedOption { get; set; }
+
+    // You can provide predefined options as constants or read them from a source
+    public static readonly string[] Options = new[] { "Option1", "Option2", "Option3", "Option4" };
 
     [DataMemberRange(1, 1024)]
-    public int CellSize { get; init; } = 10;
+    public int Size { get; init; } = 256;
+
+    [DataMemberRange(1, 1024)]
+    public int CellSize { get; init; } = 1;
 
     /// <summary>
     /// Total width of the terrain.

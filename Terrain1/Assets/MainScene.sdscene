@@ -21,6 +21,22 @@ Hierarchy:
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
+                    75058ca12801ac91ac9a7a7287fd8b46: !Terrain.TerrainGrid,Terrain
+                        Id: 7e7e59a2-0f9c-4df7-b5e0-4248e8526a38
+                        ModifiedVertices: {}
+                        Size: 256
+                        CellSize: 2
+                        Material: null
+                        VertexHeights: {}
+                        Randomize: false
+                        Flatten: false
+                    e9e02aed55677ba71dde64fb996708ef: !Terrain.Tools.SmoothBrush,Terrain
+                        Id: 770d2700-1c24-4bbc-ba8a-91d4a398271d
+                        Strength: 100
+                        Area: !Terrain.Tools.Areas.Circle,Terrain
+                            Radius: 3
+                            OuterBuffer: 0.5
+                        SmoothingFactor: 2.0
         -   Entity:
                 Id: 90651f32-f178-4f7f-bf68-96c2da02b041
                 Name: Camera

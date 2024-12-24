@@ -1,13 +1,9 @@
-﻿using Stride.Core.Annotations;
-using Stride.Engine;
-using Stride.Graphics;
-using Stride.Rendering;
-
-namespace Terrain;
+﻿namespace Terrain;
 
 using Stride.Core.Annotations;
 using Stride.Core.Mathematics;
 using Stride.Engine;
+using Stride.Games;
 using Stride.Graphics;
 using Stride.Rendering;
 
@@ -20,16 +16,37 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
         return new TerrainGridRenderData() { ModelComponent = new() { Model = new() } };
     }
     GraphicsDevice graphicsDevice { get; set; }
+    SceneSystem sceneSystem { get; set; }
+    CameraComponent editorCamera { get; set; }
+    Stride.Input.InputManager inputManager { get; set; }
     protected override void OnSystemAdd()
     {
         base.OnSystemAdd();
-
         graphicsDevice = Services.GetService<IGraphicsDeviceService>().GraphicsDevice;
+        sceneSystem = Services.GetService<SceneSystem>();
+        editorCamera = TryGetMainCamera(sceneSystem);
+        inputManager = Services.GetService<Stride.Input.InputManager>();
+    }
+    public override void Update(GameTime time)
+    {
+        base.Update(time);
+        foreach (var grid in ComponentDatas)
+        {
+            foreach (var component in grid.Key.Entity.Components)
+            {
+                if (component is TerrainEditorTool tool)
+                {
+                    tool.EditorInput = inputManager;
+                    tool.Terrain = grid.Key;
+                    tool.EditorCamera = editorCamera;
+                    tool.Update(time);
+                }
+            }
+        }
     }
     public override void Draw(RenderContext context)
     {
         base.Draw(context);
-        var sceneSystem = context.Services.GetService<SceneSystem>();
         var commandList = sceneSystem.Game.GraphicsContext.CommandList;
         foreach (var grid in ComponentDatas)
         {
@@ -39,9 +56,9 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                 var indices = grid.Key.GenerateIndices();
                 grid.Value.Size = grid.Key.Size;
                 grid.Value.CellSize = grid.Key.CellSize;
-                var indexBuffer = Stride.Graphics.Buffer.Index.New(graphicsDevice, indices, GraphicsResourceUsage.Dynamic);
+                var indexBuffer = Stride.Graphics.Buffer.Index.New(graphicsDevice, indices, GraphicsResourceUsage.Default);
                 grid.Value.IndexBuffer = indexBuffer;
-                var vertexBuffer = Stride.Graphics.Buffer.Vertex.New(graphicsDevice, vertices, GraphicsResourceUsage.Dynamic);
+                var vertexBuffer = Stride.Graphics.Buffer.Vertex.New(graphicsDevice, vertices, GraphicsResourceUsage.Default);
                 grid.Value.VertexBuffer = vertexBuffer;
                 var mesh = new Stride.Rendering.Mesh
                 {
@@ -83,12 +100,8 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                     comp.Model.Materials.Add(grid.Key.Material);
                 }
             }
-
-            // update only the modified height vertices which couldnt be applied yet
-            // improve the set data as it "laggs" with a big terrain, as the entire array is copied each time
-            if(grid.Key.ModifiedVertices.Count > 0)
+            if (grid.Key.ModifiedVertices.Count > 0)
             {
-                var vertexBuffer = grid.Value.VertexBuffer.GetData<VertexPositionNormalTexture>(commandList);
                 foreach (var location in grid.Key.ModifiedVertices)
                 {
                     var x = location.X * grid.Key.CellSize;
@@ -96,24 +109,29 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
 
                     var index = (location.Y * (grid.Key.Size + 1)) + location.X;
 
-
-                    var position = new Vector3(x, grid.Key.GetVertexHeight(location.X, location.Y), z);
-
-                    vertexBuffer[index] = new VertexPositionNormalTexture
+                    // Prepare the updated vertex
+                    var updatedVertex = new VertexPositionNormalTexture
                     {
-                        Position = position,
+                        Position = new Vector3(x, grid.Key.GetVertexHeight(location.X, location.Y), z),
                         Normal = Vector3.UnitY,
                         TextureCoordinate = new Vector2(
                             (float)location.X / grid.Key.Size,
                             (float)location.Y / grid.Key.Size
                         )
                     };
+                    
+                    // Update the vertex directly in the GPU buffer at the correct offset
+                    grid.Value.VertexBuffer.SetData(
+                        commandList,
+                        ref updatedVertex, // Update only this single vertex
+                        index * VertexPositionNormalTexture.Layout.CalculateSize()
+                    );
                 }
-                // really needed?
-                grid.Value.VertexBuffer.SetData(commandList, vertexBuffer);
+
+                // Clear the modified vertices list after updating
                 grid.Key.ModifiedVertices.Clear();
             }
-            
+
             if (grid.Key.Randomize)
             {
                 grid.Key.SetRandomHeights();
@@ -130,5 +148,35 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
     protected override void OnEntityComponentRemoved(Entity entity, TerrainGrid component, TerrainGridRenderData data)
     {
         entity.Remove<ModelComponent>();
+    }
+    public static CameraComponent TryGetMainCamera(SceneSystem sceneSystem)
+    {
+        CameraComponent camera = null;
+        if (sceneSystem.GraphicsCompositor.Cameras.Count == 0)
+        {
+            // The compositor wont have any cameras attached if the game is running in editor mode
+            // Search through the scene systems until the camera entity is found
+            // This is what you might call "A Hack"
+            foreach (var system in sceneSystem.Game.GameSystems)
+            {
+                if (system is SceneSystem editorSceneSystem)
+                {
+                    foreach (var entity in editorSceneSystem.SceneInstance.RootScene.Entities)
+                    {
+                        if (entity.Name == "Camera Editor Entity")
+                        {
+                            camera = entity.Get<CameraComponent>();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            camera = sceneSystem.GraphicsCompositor.Cameras[0].Camera;
+        }
+
+        return camera;
     }
 }

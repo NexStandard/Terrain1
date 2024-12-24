@@ -1,0 +1,24 @@
+!MaterialAsset
+Id: be6cc2d5-1043-43a4-af36-5af8a18f1e48
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Attributes:
+    Diffuse: !MaterialDiffuseMapFeature
+        DiffuseMap: !ComputeTextureColor
+            Texture: 3fd26119-aae4-413b-80bf-78d47f252875:il_1588xN.3058108485_26pa
+            FallbackValue:
+                Value: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
+            Scale: {X: 1.0, Y: 1.0}
+            Offset: {X: 0.0, Y: 0.0}
+            UseRandomTextureCoordinates: true
+            Swizzle: null
+    DiffuseModel: !MaterialDiffuseCelShadingModelFeature
+        FakeNDotL: 0.0
+        RampFunction: !MaterialCelShadingLightDefault
+            IsBlackAndWhite: false
+    Transparency: !MaterialTransparencyCutoffFeature
+        Alpha: !ComputeFloat
+            Value: 0.5
+    Overrides:
+        UVScale: {X: 1.0, Y: 1.0}
+Layers: {}

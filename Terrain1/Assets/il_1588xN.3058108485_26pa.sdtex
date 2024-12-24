@@ -1,0 +1,7 @@
+!Texture
+Id: 3fd26119-aae4-413b-80bf-78d47f252875
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Source: !file ../Resources/il_1588xN.3058108485_26pa.jpg
+Type: !ColorTextureType
+    ColorKeyColor: {R: 255, G: 0, B: 255, A: 255}
