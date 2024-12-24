@@ -1,0 +1,70 @@
+!UIPageAsset
+Id: 5f155edb-2f36-439e-9d3e-97882dacbd40
+SerializedVersion: {Stride: 2.1.0.1}
+Tags: []
+Design:
+    Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
+Hierarchy:
+    RootParts:
+        - !Grid ref!! 7befefb8-fa2c-47e1-9fa5-233fd5ac879d
+    Parts:
+        -   UIElement: !TextBlock
+                Id: 5c766a8d-89f0-492a-ae49-36db28069679
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                HorizontalAlignment: Center
+                VerticalAlignment: Center
+                Margin: {}
+                Text: Click me!
+                Font: c90f3988-0544-4cbe-993f-13af7d9c23c6:StrideDefaultFont
+                TextSize: 20.0
+                TextColor: {R: 240, G: 240, B: 240, A: 255}
+        -   UIElement: !Grid
+                Id: 7befefb8-fa2c-47e1-9fa5-233fd5ac879d
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Margin: {}
+                MaximumWidth: 3.4028235E+38
+                MaximumHeight: 3.4028235E+38
+                MaximumDepth: 3.4028235E+38
+                Children:
+                    c0f09d9d2693ddad06ac48ece3ce6a12: !StackPanel ref!! 946aa133-45aa-40dd-9c0e-f8c1478ddf8c
+                RowDefinitions:
+                    3afd472548618fce736ae0b491568bcf: {}
+                    b96cf8994f2890773d48be1486694cf2: {}
+                    eccd69a4f46845c1747b0641eeb231d2: {}
+                ColumnDefinitions:
+                    79a914cc894086f4c4ab436d3d62d7c1: {}
+                    d154fd1ce60d5ed610a009d560a0ddde: {}
+                    ce8cd3b8eb3649c17d677b817ec5c48c: {}
+                LayerDefinitions: {}
+        -   UIElement: !StackPanel
+                Id: 946aa133-45aa-40dd-9c0e-f8c1478ddf8c
+                DependencyProperties:
+                    c295140e327f67796d7ca6a540353ba7~GridBase.RowSpanPropertyKey: 3
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Margin: {}
+                MaximumWidth: 3.4028235E+38
+                MaximumHeight: 3.4028235E+38
+                MaximumDepth: 3.4028235E+38
+                Children:
+                    ba9524aa3b891cb126072d3cda093503: !Button ref!! de43f6da-5730-4f1c-98a5-a1fdbde65ab5
+        -   UIElement: !Button
+                Id: de43f6da-5730-4f1c-98a5-a1fdbde65ab5
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                DrawLayerNumber: 2
+                Margin: {}
+                MaximumWidth: 3.4028235E+38
+                MaximumHeight: 3.4028235E+38
+                MaximumDepth: 3.4028235E+38
+                Name: TestButton
+                Content: !TextBlock ref!! 5c766a8d-89f0-492a-ae49-36db28069679
+                PressedImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 2
+                NotPressedImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 1
+                MouseOverImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
