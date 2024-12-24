@@ -10,10 +10,38 @@ Hierarchy:
         - ref!! 935e8fc8-afb4-44c0-b878-6d7f6a02f582
         - ref!! dd2dd0fc-37db-4eb9-921f-67f21883ba00
         - ref!! 727de77a-123a-403c-b1d2-c90541479afa
+        - ref!! 0f6b77ca-171a-4935-9154-a7b2160f6b1e
     Parts:
         -   Entity:
+                Id: 0f6b77ca-171a-4935-9154-a7b2160f6b1e
+                Name: Entity
+                Components:
+                    ef55db0bf9877bda8c1ff42f68fe62c5: !TransformComponent
+                        Id: 811cf104-5118-4e54-b2b4-6106b0d87cb9
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    c49fa893007de3ab2ebd3ebd21aaee68: !Terrain1.UIProcessorTest.EditorExtensionComponent,Terrain1
+                        Id: ac71fc3e-adc0-42ea-b078-ce6b5de9d7e6
+                        BoxPrefab: 59950f3a-11b4-443b-90f9-c921867f5f2e:PrefabTest
+                        PrefabNextYPosition: 0
+                        InternalData:
+                            - 1
+                            - 2
+                            - 3
+                            - 4
+                            - 5
+                            - 6
+                    25482c80ba2bb2e7a10932b571bc3463: !UIComponent
+                        Id: 96c4075c-5bdc-4405-ac1a-e9502d1bbfd3
+                        Page: 5f155edb-2f36-439e-9d3e-97882dacbd40:Page
+                        Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
+                        Size: {X: 1.28, Y: 0.72, Z: 1.0}
+                        ResolutionStretch: FixedWidthFixedHeight
+        -   Entity:
                 Id: 727de77a-123a-403c-b1d2-c90541479afa
-                Name: Sphere
+                Name: Terrain
                 Components:
                     58f8c514be50ab1125334dddf67abae4: !TransformComponent
                         Id: f3cf3829-72a5-434a-a0c1-b8b427db9dcd
@@ -21,22 +49,16 @@ Hierarchy:
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
-                    75058ca12801ac91ac9a7a7287fd8b46: !Terrain.TerrainGrid,Terrain
-                        Id: 7e7e59a2-0f9c-4df7-b5e0-4248e8526a38
+                    912d551ba8cf26b8c76efe7c4aa7c144: !Terrain.TerrainGrid,Terrain
+                        Id: 98503b91-6314-48a9-a34c-d9bd6088b400
                         ModifiedVertices: {}
+                        SelectedOption: null
                         Size: 256
                         CellSize: 2
-                        Material: null
+                        Material: be6cc2d5-1043-43a4-af36-5af8a18f1e48:Material_2
                         VertexHeights: {}
                         Randomize: false
                         Flatten: false
-                    e9e02aed55677ba71dde64fb996708ef: !Terrain.Tools.SmoothBrush,Terrain
-                        Id: 770d2700-1c24-4bbc-ba8a-91d4a398271d
-                        Strength: 100
-                        Area: !Terrain.Tools.Areas.Circle,Terrain
-                            Radius: 3
-                            OuterBuffer: 0.5
-                        SmoothingFactor: 2.0
         -   Entity:
                 Id: 90651f32-f178-4f7f-bf68-96c2da02b041
                 Name: Camera

@@ -1,0 +1,22 @@
+!PrefabAsset
+Id: 59950f3a-11b4-443b-90f9-c921867f5f2e
+SerializedVersion: {Stride: 3.1.0.1}
+Tags: []
+Hierarchy:
+    RootParts:
+        - ref!! 723051dc-5d4c-4fe4-b39c-a0b4bf8736e6
+    Parts:
+        -   Entity:
+                Id: 723051dc-5d4c-4fe4-b39c-a0b4bf8736e6
+                Name: PrefabTest
+                Components:
+                    4c7bad408139358d416fb7e11fb72f1a: !TransformComponent
+                        Id: 2670f89a-8988-4a07-a278-5e7f398f306e
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    f8f8f84f33ed976d894ff7690993734e: !ModelComponent
+                        Id: 64387ce6-908c-490b-a7c6-781b23c235e2
+                        Model: 35c360d5-1020-4e9b-bdf6-9b9fd1374767:Sphere
+                        Materials: {}
