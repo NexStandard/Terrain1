@@ -1,11 +1,20 @@
 ﻿namespace Terrain;
 
+using SharpDX.Direct3D12;
 using Stride.Core.Annotations;
+using Stride.Core.Extensions;
 using Stride.Core.Mathematics;
 using Stride.Engine;
 using Stride.Games;
 using Stride.Graphics;
 using Stride.Rendering;
+using Stride.UI;
+using Stride.UI.Controls;
+using Stride.UI.Panels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRenderData>, IEntityComponentRenderProcessor
 {
@@ -18,6 +27,7 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
     GraphicsDevice graphicsDevice { get; set; }
     SceneSystem sceneSystem { get; set; }
     CameraComponent editorCamera { get; set; }
+    SpriteFont _font;
     Stride.Input.InputManager inputManager { get; set; }
     protected override void OnSystemAdd()
     {
@@ -30,23 +40,45 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
     public override void Update(GameTime time)
     {
         base.Update(time);
+        if (_font is null)
+        {
+            _font = sceneSystem.Game.Content.Load<SpriteFont>("StrideDefaultFont");
+        }
         foreach (var grid in ComponentDatas)
         {
+            // Process TerrainEditorTools
             foreach (var component in grid.Key.Entity.Components)
             {
                 if (component is TerrainEditorTool tool)
                 {
-                    tool.EditorInput = inputManager;
-                    tool.Terrain = grid.Key;
-                    tool.EditorCamera = editorCamera;
-                    tool.Update(time);
+                    if (tool.Active)
+                    {
+                        tool.EditorInput = inputManager;
+                        tool.Terrain = grid.Key;
+                        tool.EditorCamera = editorCamera;
+                        tool.Update(time);
+                    }
+                }
+            }
+            // Process UIComponent for managing buttons
+            foreach (var component in grid.Key.Entity.Components)
+            {
+                if (component is TerrainUITool f)
+                {
+                    f.EditorInput = inputManager;
+                    f.Terrain = grid.Key;
+                    f.EditorFont = _font;
+                    f.EditorCamera = editorCamera;
+                    f.Update(time);
                 }
             }
         }
     }
+
     public override void Draw(RenderContext context)
     {
         base.Draw(context);
+
         var commandList = sceneSystem.Game.GraphicsContext.CommandList;
         foreach (var grid in ComponentDatas)
         {
@@ -119,7 +151,7 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                             (float)location.Y / grid.Key.Size
                         )
                     };
-                    
+
                     // Update the vertex directly in the GPU buffer at the correct offset
                     grid.Value.VertexBuffer.SetData(
                         commandList,

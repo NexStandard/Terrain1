@@ -7,32 +7,25 @@ using Stride.Games;
 using Stride.Input;
 using Stride.Rendering;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Media3D;
 
 namespace Terrain;
 
+[ComponentCategory("Terrain")]
 public abstract class TerrainEditorTool : StartupScript
 {
-    /// <summary>
-    /// Do not set this
-    /// </summary>
+    [DataMember(1)]
+    public abstract string UIName { get; set; }
+
     [DataMemberIgnore]
-    public TerrainGrid Terrain { get; set; }
-    /// <summary>
-    /// Do not set this
-    /// </summary>
+    public TerrainGrid Terrain { get; internal set; }
+
     [DataMemberIgnore]
-    public CameraComponent EditorCamera { get; set; }
-    /// <summary>
-    /// Do not set this
-    /// </summary>
+    public CameraComponent EditorCamera { get; internal set; }
+
     [DataMemberIgnore]
-    public InputManager EditorInput {  get; set; }
+    public InputManager EditorInput {  get; internal set; }
+
+    public bool Active { get; set; }
 
     [DataMemberRange(0, 100)]
     public int Strength { get; set; } = 100;
@@ -40,10 +33,7 @@ public abstract class TerrainEditorTool : StartupScript
     public override void Start()
     {
     }
-    public virtual void Draw(RenderContext context) 
-    {
 
-    }
     public virtual void Update(GameTime gameTime) 
     {
         if (EditorCamera is null)

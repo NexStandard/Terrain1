@@ -1,4 +1,5 @@
 ﻿using Stride.Core.Mathematics;
+using Stride.Engine;
 using Stride.Games;
 using Stride.Input;
 using System;
@@ -9,9 +10,12 @@ using System.Threading.Tasks;
 using Terrain.Tools.Areas;
 
 namespace Terrain.Tools;
+
+[ComponentCategory("Terrain")]
 public class MaskedElevateBrush : TerrainEditorTool
 {
     public Area Area { get; init; } = new Circle();
+    public override string UIName { get; set; } = nameof(MaskedElevateBrush);
 
     public override void Update(GameTime time)
     {

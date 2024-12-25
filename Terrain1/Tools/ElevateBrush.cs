@@ -1,4 +1,5 @@
 ﻿using Stride.Core.Mathematics;
+using Stride.Engine;
 using Stride.Games;
 using Stride.Input;
 using Stride.Rendering;
@@ -11,9 +12,12 @@ using System.Windows.Media.Media3D;
 using Terrain.Tools.Areas;
 
 namespace Terrain.Tools;
+
+[ComponentCategory("Terrain")]
 public class ElevateBrush : TerrainEditorTool
 {
     public Area Area { get; init; } = new Circle();
+    public override string UIName { get; set; } = nameof(ElevateBrush);
 
     public override void Update(GameTime time)
     {

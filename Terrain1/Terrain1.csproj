@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\ixlle\.nuget\packages\stride.gamestudio\4.2.0.2282\contentFiles\any\net8.0-windows7.0\BACKERS.md" />
+    <Content Remove="C:\Users\ixlle\.nuget\packages\stride.gamestudio\4.2.0.2282\contentFiles\any\net8.0-windows7.0\LICENSE.md" />
+    <Content Remove="C:\Users\ixlle\.nuget\packages\stride.gamestudio\4.2.0.2282\contentFiles\any\net8.0-windows7.0\THIRD PARTY.md" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Stride.Assets.Presentation" Version="4.2.0.2282" />
     <PackageReference Include="Stride.Engine" Version="4.2.0.2282" />
     <PackageReference Include="Stride.GameStudio" Version="4.2.0.2282" />
@@ -14,7 +20,7 @@
     <PackageReference Include="Stride.Navigation" Version="4.2.0.2282" />
     <PackageReference Include="Stride.Particles" Version="4.2.0.2282" />
     <PackageReference Include="Stride.UI" Version="4.2.0.2282" />
-
+	  <PackageReference Include="Stride.CommunityToolkit" Version="1.0.0-preview.48" />
     <PackageReference Include="Stride.Core.Assets.CompilerApp" Version="4.2.0.2282" IncludeAssets="build;buildTransitive" />
   </ItemGroup>
 </Project>

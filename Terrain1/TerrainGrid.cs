@@ -11,17 +11,10 @@ using System.ComponentModel;
 
 namespace Terrain;
 [Display("Terrain", Expand = ExpandRule.Once)]
+[ComponentCategory("Terrain")]
 [DefaultEntityComponentRenderer(typeof(TerrainGridProcessor))]
 public class TerrainGrid : StartupScript
 {
-
-    [Display("Select Option")]
-    [DefaultValue("Option1")]
-    public string SelectedOption { get; set; }
-
-    // You can provide predefined options as constants or read them from a source
-    public static readonly string[] Options = new[] { "Option1", "Option2", "Option3", "Option4" };
-
     [DataMemberRange(1, 1024)]
     public int Size { get; init; } = 256;
 
