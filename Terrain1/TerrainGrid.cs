@@ -8,6 +8,7 @@ using Stride.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Terrain1.Tools;
 
 namespace Terrain;
 [Display("Terrain", Expand = ExpandRule.Once)]
@@ -35,10 +36,10 @@ public class TerrainGrid : StartupScript
 
     public Dictionary<Int2, float> VertexHeights { get; } = new();
     public HashSet<Int2> ModifiedVertices = new();
-    public VertexPositionNormalTexture[] GenerateVertices()
+    public VertexPositionNormalColorTexture[] GenerateVertices()
     {
         var vertexCount = (Size + 1) * (Size + 1);
-        var vertices = new VertexPositionNormalTexture[vertexCount];
+        var vertices = new VertexPositionNormalColorTexture[vertexCount];
 
         var actualCellWidth = TotalWidth / Size;
         var actualCellHeight = TotalHeight / Size;
@@ -54,14 +55,15 @@ public class TerrainGrid : StartupScript
 
                 var position = new Vector3(x, GetVertexHeight(col, row), z);
 
-                vertices[index] = new VertexPositionNormalTexture
+                vertices[index] = new VertexPositionNormalColorTexture
                 {
                     Position = position,
                     Normal = Vector3.UnitY,
                     TextureCoordinate = new Vector2(
                         (float)col / Size,
                         (float)row / Size
-                    )
+                    ),
+                    Color = Color.Blue,
                 };
             }
         }

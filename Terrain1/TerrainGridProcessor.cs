@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Terrain1.Tools;
 
 public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRenderData>, IEntityComponentRenderProcessor
 {
@@ -99,7 +100,7 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                         PrimitiveType = Stride.Graphics.PrimitiveType.TriangleList,
                         DrawCount = indices.Length,
                         IndexBuffer = new IndexBufferBinding(grid.Value.IndexBuffer, true, indices.Length),
-                        VertexBuffers = new[] { new VertexBufferBinding(grid.Value.VertexBuffer, VertexPositionNormalTexture.Layout, grid.Value.VertexBuffer.ElementCount) },
+                        VertexBuffers = new[] { new VertexBufferBinding(grid.Value.VertexBuffer, VertexPositionNormalColorTexture.Layout, grid.Value.VertexBuffer.ElementCount) },
                     },
                     MaterialIndex = 0,
                 };
@@ -132,6 +133,7 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                     comp.Model.Materials.Add(grid.Key.Material);
                 }
             }
+            /*
             if (grid.Key.ModifiedVertices.Count > 0)
             {
                 foreach (var location in grid.Key.ModifiedVertices)
@@ -163,6 +165,7 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                 // Clear the modified vertices list after updating
                 grid.Key.ModifiedVertices.Clear();
             }
+                */
 
             if (grid.Key.Randomize)
             {

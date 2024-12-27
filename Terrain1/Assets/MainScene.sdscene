@@ -21,8 +21,13 @@ Hierarchy:
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
-                    0d204a7786c71287603e3fc622e6c0f2: !Terrain.TerrainGrid,Terrain1
-                        Id: 197dd5dd-7c71-4c3a-ac1c-105ada311dec
+                    bc6cdbc124a088faa8fd9d0172140f8d: !UIComponent
+                        Id: 172d0098-59fd-47c9-9ffd-82751dd02cf5
+                        Page: null
+                        Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
+                        Size: {X: 1.28, Y: 0.72, Z: 1.0}
+                    0c706b64713eb44dce53b8e0e3cc035f: !Terrain.TerrainGrid,Terrain1
+                        Id: 913d89fe-cec3-433d-bd4f-376a45ef54c7
                         ModifiedVertices: {}
                         Size: 256
                         CellSize: 1
@@ -30,11 +35,15 @@ Hierarchy:
                         VertexHeights: {}
                         Randomize: false
                         Flatten: false
-                    bc6cdbc124a088faa8fd9d0172140f8d: !UIComponent
-                        Id: 172d0098-59fd-47c9-9ffd-82751dd02cf5
-                        Page: null
-                        Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
-                        Size: {X: 1.28, Y: 0.72, Z: 1.0}
+                    ddcc41ebe2179af8e1f4ebd0c37151c1: !Terrain.TerrainGrid,Terrain1
+                        Id: d9a90852-b3d9-471e-8d23-62917f43be47
+                        ModifiedVertices: {}
+                        Size: 256
+                        CellSize: 1
+                        Material: null
+                        VertexHeights: {}
+                        Randomize: false
+                        Flatten: false
         -   Entity:
                 Id: 90651f32-f178-4f7f-bf68-96c2da02b041
                 Name: Camera
