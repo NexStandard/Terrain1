@@ -133,7 +133,6 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                     comp.Model.Materials.Add(grid.Key.Material);
                 }
             }
-            /*
             if (grid.Key.ModifiedVertices.Count > 0)
             {
                 foreach (var location in grid.Key.ModifiedVertices)
@@ -144,14 +143,15 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                     var index = (location.Y * (grid.Key.Size + 1)) + location.X;
 
                     // Prepare the updated vertex
-                    var updatedVertex = new VertexPositionNormalTexture
+                    var updatedVertex = new VertexPositionNormalColorTexture
                     {
                         Position = new Vector3(x, grid.Key.GetVertexHeight(location.X, location.Y), z),
                         Normal = Vector3.UnitY,
                         TextureCoordinate = new Vector2(
                             (float)location.X / grid.Key.Size,
                             (float)location.Y / grid.Key.Size
-                        )
+                        ),
+                        Color = grid.Key.GetVertexColor(location.X,location.Y)
                     };
 
                     // Update the vertex directly in the GPU buffer at the correct offset
@@ -165,7 +165,7 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                 // Clear the modified vertices list after updating
                 grid.Key.ModifiedVertices.Clear();
             }
-                */
+                
 
             if (grid.Key.Randomize)
             {

@@ -34,6 +34,8 @@ public class TerrainGrid : StartupScript
 
     public Material Material { get; set; }
 
+    public Dictionary<Int2, Color> VertexColors { get; } = new();
+
     public Dictionary<Int2, float> VertexHeights { get; } = new();
     public HashSet<Int2> ModifiedVertices = new();
     public VertexPositionNormalColorTexture[] GenerateVertices()
@@ -55,15 +57,15 @@ public class TerrainGrid : StartupScript
 
                 var position = new Vector3(x, GetVertexHeight(col, row), z);
 
+                var color = Color.Blue; // Default or calculated color
+                VertexColors[new Int2(col, row)] = color;
+
                 vertices[index] = new VertexPositionNormalColorTexture
                 {
                     Position = position,
                     Normal = Vector3.UnitY,
-                    TextureCoordinate = new Vector2(
-                        (float)col / Size,
-                        (float)row / Size
-                    ),
-                    Color = Color.Blue,
+                    TextureCoordinate = new Vector2((float)col / Size, (float)row / Size),
+                    Color = color,
                 };
             }
         }
@@ -124,6 +126,11 @@ public class TerrainGrid : StartupScript
         return VertexHeights.TryGetValue(key, out var height) ? height : 0f;
     }
 
+    public Color GetVertexColor(int col, int row)
+    {
+        var key = new Int2(col, row);
+        return VertexColors.TryGetValue(key, out var color) ? color : Color.Black; // Default color if not set
+    }
     // Get the height of a point in the terrain
     public float GetHeightAtPosition(float x, float z)
     {
