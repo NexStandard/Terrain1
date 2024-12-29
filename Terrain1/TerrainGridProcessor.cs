@@ -163,7 +163,7 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                         var color = y switch
                         {
                             0 => Color.Red,
-                            1 => Color.Lime,
+                            1 => Color.Green,
                             2 => Color.Blue,
                             _ => Color.Black,
                         };
