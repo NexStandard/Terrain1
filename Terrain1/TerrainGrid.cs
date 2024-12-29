@@ -64,7 +64,7 @@ public class TerrainGrid : StartupScript
 
                 var position = new Vector3(x, GetVertexHeight(col, row), z);
 
-                var color = Color.Blue; // Default or calculated color
+                var color = Color.Black; // Default or calculated color
                 VertexColors[new Int2(col, row)] = color;
 
                 vertices[index] = new VertexPositionNormalColorTexture
@@ -73,6 +73,7 @@ public class TerrainGrid : StartupScript
                     Normal = Vector3.UnitY,
                     TextureCoordinate = new Vector2((float)col / Size, (float)row / Size),
                     Color = color,
+                    Color1 = color,
                 };
             }
         }

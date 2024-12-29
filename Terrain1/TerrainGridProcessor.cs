@@ -153,6 +153,8 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                             (float)location.X / grid.Key.Size,
                             (float)location.Y / grid.Key.Size
                         )
+                        , Color = Color.Black,
+                        Color1 = Color.Black
                     };
                     if (grid.Key.VertexColorMaterialMapping.TryGetValue(new Int2(x,z), out var target))
                     {
