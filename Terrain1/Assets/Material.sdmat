@@ -9,4 +9,22 @@ Attributes:
     DiffuseModel: !MaterialDiffuseLambertModelFeature {}
     Overrides:
         UVScale: {X: 1.0, Y: 1.0}
-Layers: {}
+Layers:
+    96b414bbcc87e4f0f3fb8c3699965481:
+        Material: be6cc2d5-1043-43a4-af36-5af8a18f1e48:Material_2
+        BlendMap: !TerrainMaskComputeColor
+            TerrainLayerIndex: 0
+        Overrides:
+            UVScale: {X: 1.0, Y: 1.0}
+    bd36c8d41ad56b22aef47115351323dc:
+        Material: b3ff447b-0700-4e2f-bddb-b943d6f05e60:Material_6
+        BlendMap: !TerrainMaskComputeColor
+            TerrainLayerIndex: 4
+        Overrides:
+            UVScale: {X: 255.0, Y: 255.0}
+    dc3568b78753414f91989788a30e724b:
+        Material: e54fef1f-8048-462c-ad3c-0c59f57afdcb:Material_4
+        BlendMap: !TerrainMaskComputeColor
+            TerrainLayerIndex: 1
+        Overrides:
+            UVScale: {X: 1.0, Y: 1.0}

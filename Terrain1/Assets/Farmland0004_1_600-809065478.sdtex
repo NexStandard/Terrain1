@@ -1,0 +1,7 @@
+!Texture
+Id: 47707a5f-b684-4e62-93c0-b4c166ed63bb
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Source: !file ../Resources/Farmland0004_1_600-809065478.jpg
+Type: !ColorTextureType
+    ColorKeyColor: {R: 255, G: 0, B: 255, A: 255}

@@ -1,10 +1,13 @@
-﻿using Stride.Core;
+﻿
+using SharpFont.MultipleMasters;
+using Stride.Core;
 using Stride.Core.Annotations;
 using Stride.Core.Mathematics;
 using Stride.Engine;
 using Stride.Engine.Design;
 using Stride.Graphics;
 using Stride.Rendering;
+using Stride.Rendering.Materials;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,10 +37,14 @@ public class TerrainGrid : StartupScript
 
     public Material Material { get; set; }
 
+    public void Nothing(MaterialDescriptor material) { }
     public Dictionary<Int2, Color> VertexColors { get; } = new();
+    public Dictionary<Int2, Color> VertexColors1 { get; } = new();
+    public Dictionary<Int2, int> VertexColorMaterialMapping { get; } = new();
 
     public Dictionary<Int2, float> VertexHeights { get; } = new();
     public HashSet<Int2> ModifiedVertices = new();
+    public Dictionary<Int2, (Color,Color)> VertexColor = new();
     public VertexPositionNormalColorTexture[] GenerateVertices()
     {
         var vertexCount = (Size + 1) * (Size + 1);
@@ -126,10 +133,18 @@ public class TerrainGrid : StartupScript
         return VertexHeights.TryGetValue(key, out var height) ? height : 0f;
     }
 
-    public Color GetVertexColor(int col, int row)
+    public void SetVertexColor(int x, int y, int colorLayerIndex)
     {
-        var key = new Int2(col, row);
-        return VertexColors.TryGetValue(key, out var color) ? color : Color.Black; // Default color if not set
+        var k = new Int2(x, y);
+        VertexColorMaterialMapping[k] = colorLayerIndex;
+        ModifiedVertices.Add(k);
+    }
+    public void SetVertexColor1(int x, int y, Color color)
+    {
+        var k = new Int2(x, y);
+
+        VertexColors1[k] = color;
+        ModifiedVertices.Add(k);
     }
     // Get the height of a point in the terrain
     public float GetHeightAtPosition(float x, float z)
@@ -229,5 +244,9 @@ public class TerrainGrid : StartupScript
             }
         }
     }
+
+
+
+
     #endregion
 }

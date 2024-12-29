@@ -8,11 +8,13 @@ using Stride.Engine;
 using Stride.Games;
 using Stride.Graphics;
 using Stride.Rendering;
+using Stride.Rendering.Materials;
 using Stride.UI;
 using Stride.UI.Controls;
 using Stride.UI.Panels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Terrain1.Tools;
@@ -150,15 +152,34 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                         TextureCoordinate = new Vector2(
                             (float)location.X / grid.Key.Size,
                             (float)location.Y / grid.Key.Size
-                        ),
-                        Color = grid.Key.GetVertexColor(location.X,location.Y)
+                        )
                     };
-
+                    if (grid.Key.VertexColorMaterialMapping.TryGetValue(new Int2(x,z), out var target))
+                    {
+                        var x1 = target / 4;
+                        var y = target % 4;
+                        var color = y switch
+                        {
+                            0 => Color.Red,
+                            1 => Color.Lime,
+                            2 => Color.Blue,
+                            _ => Color.Black,
+                        };
+                        if (x1 == 0)
+                        {
+                            updatedVertex.Color = color;
+                        }
+                        else if (x1 == 1)
+                        {
+                            updatedVertex.Color1 = color;
+                        }
+                    }
+                    File.WriteAllText("D:\\Colors", updatedVertex.Color.ToString() + updatedVertex.Color1 + target);
                     // Update the vertex directly in the GPU buffer at the correct offset
                     grid.Value.VertexBuffer.SetData(
                         commandList,
                         ref updatedVertex, // Update only this single vertex
-                        index * VertexPositionNormalTexture.Layout.CalculateSize()
+                        index * VertexPositionNormalColorTexture.Layout.CalculateSize()
                     );
                 }
 
