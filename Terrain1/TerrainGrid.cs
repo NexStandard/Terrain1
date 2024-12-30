@@ -3,6 +3,8 @@
 using Stride.Core;
 using Stride.Core.Annotations;
 using Stride.Core.Mathematics;
+using Stride.Core.Serialization;
+using Stride.Core.Serialization.Contents;
 using Stride.Engine;
 using Stride.Engine.Design;
 using Stride.Rendering;
@@ -17,6 +19,7 @@ using Terrain1.Tools;
 namespace Terrain;
 [Display("Terrain", Expand = ExpandRule.Once)]
 [ComponentCategory("Terrain")]
+[ContentSerializer(typeof(DataContentSerializer<TerrainGrid>))]
 [DefaultEntityComponentRenderer(typeof(TerrainGridProcessor))]
 public class TerrainGrid : StartupScript
 {
@@ -43,7 +46,7 @@ public class TerrainGrid : StartupScript
     public Dictionary<Int2, Color> VertexColors1 { get; } = new();
     public Dictionary<Int2, int> VertexColorMaterialMapping { get; } = new();
     [Display(Browsable=false)]
-    [DataMember(DataMemberMode.Content)]
+    [DataMember()]
     public List<HeightTest> HeightTest { get; set; } = new();
     [DataMember()]
     public List<KeyValuePair<Int2,float>> VertexHeightsE { get => VertexHeights.ToList(); set => VertexHeights = value.ToDictionary(x => x.Key, y => y.Value); }
@@ -138,6 +141,7 @@ public class TerrainGrid : StartupScript
         VertexHeights[key] = height;
         HeightTest.Add(new HeightTest() { X = col, Y = row, Z = height });
         File.WriteAllText("D:\\Count", HeightTest.Count.ToString());
+        
         ModifiedVertices.Add(key);
     }
     public float GetVertexHeight(int col, int row)
@@ -264,6 +268,7 @@ public class TerrainGrid : StartupScript
     #endregion
 }
 [DataContract]
+[ContentSerializer(typeof(DataContentSerializer<HeightTest>))]
 public class HeightTest
 {
     public int X;

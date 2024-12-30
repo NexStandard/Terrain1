@@ -1,22 +1,14 @@
 ﻿namespace Terrain;
 
-using SharpDX.Direct3D12;
 using Stride.Core.Annotations;
-using Stride.Core.Extensions;
 using Stride.Core.Mathematics;
 using Stride.Engine;
 using Stride.Games;
 using Stride.Graphics;
 using Stride.Rendering;
-using Stride.Rendering.Materials;
-using Stride.UI;
-using Stride.UI.Controls;
-using Stride.UI.Panels;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using Terrain1.Tools;
 
 public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRenderData>, IEntityComponentRenderProcessor
@@ -197,16 +189,54 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
             }
             if (grid.Key.Flatten)
             {
-                grid.Key.FlattenAll();
+                OnResetPrefabNextYPositionButtonClicked(grid.Key);
                 grid.Key.Flatten = false;
             }
         }
+    }
+    private void OnResetPrefabNextYPositionButtonClicked(TerrainGrid grid)
+    {
+        var kv = ComponentDatas.FirstOrDefault();
+        var levelEditComp = kv.Key;
+
+        var editorVm = Stride.Core.Assets.Editor.ViewModel.EditorViewModel.Instance;
+        var gsVm = Stride.GameStudio.ViewModels.GameStudioViewModel.GameStudio;
+        gsVm.StrideAssets.Dispatcher.Invoke(() =>
+        {
+            // Application.Current must be accessed on the UI thread
+            var window = System.Windows.Application.Current.MainWindow as Stride.GameStudio.View.GameStudioWindow;
+
+            var sceneEditorView = window.GetChildOfType<Stride.Assets.Presentation.AssetEditors.SceneEditor.Views.SceneEditorView>();
+            var sceneEditorVm = sceneEditorView?.DataContext as Stride.Assets.Presentation.AssetEditors.SceneEditor.ViewModels.SceneEditorViewModel;
+            if (sceneEditorVm != null)
+            {
+                var levelEditorEntity = levelEditComp.Entity;
+
+                var root = sceneEditorVm.HierarchyRoot;
+                var levelEditorEntityAssetPart = root.Asset.Asset.Hierarchy.Parts.FirstOrDefault(x => x.Value.Entity.Id == levelEditorEntity.Id);
+                var vmLevelEditorEntity = levelEditorEntityAssetPart.Value.Entity;
+
+                var vmLevelEditComp = vmLevelEditorEntity.Get<TerrainGrid>();
+
+                var levelEditCompNode = sceneEditorVm.Session.AssetNodeContainer.GetNode(vmLevelEditComp);
+
+                var nextYPosNodeRaw = levelEditCompNode[nameof(TerrainGrid.VertexHeightsE)];
+                var nextYPosNode = nextYPosNodeRaw as Stride.Core.Assets.Quantum.IAssetMemberNode;
+
+                using (var transaction = sceneEditorVm.UndoRedoService.CreateTransaction())
+                {
+                    nextYPosNode.Update(grid.VertexHeightsE);
+                    sceneEditorVm.UndoRedoService.SetName(transaction, "Level Editor Reset prefab next Y position");
+                }
+            }
+        });
     }
 
     protected override void OnEntityComponentRemoved(Entity entity, TerrainGrid component, TerrainGridRenderData data)
     {
         entity.Remove<ModelComponent>();
     }
+
     public static CameraComponent TryGetMainCamera(SceneSystem sceneSystem)
     {
         CameraComponent camera = null;
@@ -236,5 +266,40 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
         }
 
         return camera;
+    }
+}
+
+static class WpfExt
+{
+    public static void GetChildrenOfType<T>(this System.Windows.DependencyObject depObj, List<T> foundChildren)
+        where T : System.Windows.DependencyObject
+    {
+        if (depObj == null) return;
+
+        for (int i = 0; i < System.Windows.Media.VisualTreeHelper.GetChildrenCount(depObj); i++)
+        {
+            var child = System.Windows.Media.VisualTreeHelper.GetChild(depObj, i);
+
+            if (child is T matchedChild)
+            {
+                foundChildren.Add(matchedChild);
+            }
+            GetChildrenOfType(child, foundChildren);
+        }
+    }
+
+    public static T GetChildOfType<T>(this System.Windows.DependencyObject depObj)
+        where T : System.Windows.DependencyObject
+    {
+        if (depObj == null) return null;
+
+        for (int i = 0; i < System.Windows.Media.VisualTreeHelper.GetChildrenCount(depObj); i++)
+        {
+            var child = System.Windows.Media.VisualTreeHelper.GetChild(depObj, i);
+
+            var result = (child as T) ?? GetChildOfType<T>(child);
+            if (result != null) return result;
+        }
+        return null;
     }
 }
