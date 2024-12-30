@@ -1,16 +1,17 @@
 ﻿
-using SharpFont.MultipleMasters;
+
 using Stride.Core;
 using Stride.Core.Annotations;
 using Stride.Core.Mathematics;
 using Stride.Engine;
 using Stride.Engine.Design;
-using Stride.Graphics;
 using Stride.Rendering;
 using Stride.Rendering.Materials;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using Terrain1.Tools;
 
 namespace Terrain;
@@ -41,10 +42,19 @@ public class TerrainGrid : StartupScript
     public Dictionary<Int2, Color> VertexColors { get; } = new();
     public Dictionary<Int2, Color> VertexColors1 { get; } = new();
     public Dictionary<Int2, int> VertexColorMaterialMapping { get; } = new();
-
-    public Dictionary<Int2, float> VertexHeights { get; } = new();
+    [Display(Browsable=false)]
+    [DataMember(DataMemberMode.Content)]
+    public List<HeightTest> HeightTest { get; set; } = new();
+    [DataMember()]
+    public List<KeyValuePair<Int2,float>> VertexHeightsE { get => VertexHeights.ToList(); set => VertexHeights = value.ToDictionary(x => x.Key, y => y.Value); }
+    [DataMemberIgnore]
+    public Dictionary<Int2, float> VertexHeights { get; private set; } = new();
     public HashSet<Int2> ModifiedVertices = new();
     public Dictionary<Int2, (Color,Color)> VertexColor = new();
+    public override void Start()
+    {
+        Entity.Add(new ModelComponent());
+    }
     public VertexPositionNormalColorTexture[] GenerateVertices()
     {
         var vertexCount = (Size + 1) * (Size + 1);
@@ -126,6 +136,8 @@ public class TerrainGrid : StartupScript
     {
         var key = new Int2(col, row);
         VertexHeights[key] = height;
+        HeightTest.Add(new HeightTest() { X = col, Y = row, Z = height });
+        File.WriteAllText("D:\\Count", HeightTest.Count.ToString());
         ModifiedVertices.Add(key);
     }
     public float GetVertexHeight(int col, int row)
@@ -250,4 +262,11 @@ public class TerrainGrid : StartupScript
 
 
     #endregion
+}
+[DataContract]
+public class HeightTest
+{
+    public int X;
+    public int Y;
+    public float Z;
 }

@@ -5,14 +5,8 @@ using Stride.Rendering.Materials.ComputeColors;
 using Stride.Rendering.Materials;
 using Stride.Shaders;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Stride.Core;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.IO;
 
 namespace Terrain1.Tools;
 
