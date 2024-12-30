@@ -26,6 +26,28 @@ Hierarchy:
                         Page: null
                         Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
                         Size: {X: 1.28, Y: 0.72, Z: 1.0}
+                    c10bfab512a0e0eace3008ec28d06a3f: !Terrain.Tools.ElevateBrush,Terrain1
+                        Id: a56dc1bc-c298-42c8-9415-cc8924d53435
+                        UIName: ElevateBrush
+                        Active: true
+                        Strength: 100
+                        Area: !Terrain.Tools.Areas.Circle,Terrain1
+                            Radius: 3
+                            OuterBuffer: 0.5
+                    298291ab89f24a06379d040fd363f929: !Terrain.TerrainGrid,Terrain1
+                        Id: 3d28e3d7-25f4-4cb0-9093-6513677c4145
+                        ModifiedVertices: {}
+                        VertexColor: {}
+                        Size: 256
+                        CellSize: 1
+                        Material: null
+                        VertexColors: {}
+                        VertexColors1: {}
+                        VertexColorMaterialMapping: {}
+                        HeightTest: {}
+                        VertexHeightsE: {}
+                        Randomize: false
+                        Flatten: false
         -   Entity:
                 Id: 90651f32-f178-4f7f-bf68-96c2da02b041
                 Name: Camera
