@@ -1,0 +1,6 @@
+!Texture
+Id: 50792fcc-e136-47a2-9882-832236b02452
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Source: !file ../Resources/Layer2.png
+Type: !GrayscaleTextureType {}

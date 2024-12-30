@@ -26,47 +26,6 @@ Hierarchy:
                         Page: null
                         Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
                         Size: {X: 1.28, Y: 0.72, Z: 1.0}
-                    6cac159c93481896a267d18c8ca723d5: !Terrain.Tools.SmoothBrush,Terrain1
-                        Id: 1405cc44-3601-4211-9148-9037d7f035ef
-                        UIName: SmoothBrush
-                        Active: false
-                        Strength: 100
-                        Area: !Terrain.Tools.Areas.Circle,Terrain1
-                            Radius: 3
-                            OuterBuffer: 0.5
-                        SmoothingFactor: 2.0
-                    55d52c9465fefaa15ed08ed39df9c4bd: !Terrain.Tools.ElevateBrush,Terrain1
-                        Id: d6cd2350-6a4f-47b8-8840-9345bcfe8d93
-                        UIName: ElevateBrush
-                        Active: true
-                        Strength: 100
-                        Area: !Terrain.Tools.Areas.Circle,Terrain1
-                            Radius: 3
-                            OuterBuffer: 0.5
-                    21a53ce3f65d2df30fc0ad9ec28a9162: !Terrain1.Tools.ColorBrush,Terrain1
-                        Id: a885c532-73cc-4d9f-b92f-05066995f97e
-                        UIName: ColorBrush
-                        Priority: 5
-                        Active: true
-                        Strength: 100
-                        Area: !Terrain.Tools.Areas.Circle,Terrain1
-                            Radius: 4
-                            OuterBuffer: 0.5
-                        Paint:
-                            TerrainLayerIndex: 2
-                    1fd8bf650648e7615a581f295734f451: !Terrain.TerrainGrid,Terrain1
-                        Id: 0001dba3-2856-4ec3-be4e-ab6d54d6ce5d
-                        ModifiedVertices: {}
-                        VertexColor: {}
-                        Size: 255
-                        CellSize: 1
-                        Material: e328768b-796e-45b8-b892-815f9b670747:Material
-                        VertexColors: {}
-                        VertexColors1: {}
-                        VertexColorMaterialMapping: {}
-                        VertexHeights: {}
-                        Randomize: false
-                        Flatten: false
         -   Entity:
                 Id: 90651f32-f178-4f7f-bf68-96c2da02b041
                 Name: Camera
