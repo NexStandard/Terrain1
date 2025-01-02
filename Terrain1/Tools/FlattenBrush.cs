@@ -16,10 +16,15 @@ public class FlattenBrush : TerrainEditorTool
 {
     public Area Area { get; init; } = new Circle();
     public override string UIName { get; set; } = nameof(FlattenBrush);
+    
+    private bool isDone = false;
+
+    public override bool NeedsTransactionCommit { get => Terrain.TerrainVertexDraw.CanCommit && isDone; }
     private float? TargetHeight { get; set; } // Cached target height while the mouse is pressed
 
     public override void Update(GameTime time)
     {
+        isDone = false;
         base.Update(time);
 
         if (Area == null)
@@ -43,6 +48,7 @@ public class FlattenBrush : TerrainEditorTool
         else if (EditorInput.Mouse.IsButtonReleased(MouseButton.Left))
         {
             // Reset the cached target height when the mouse is released
+            isDone = true;
             TargetHeight = null;
         }
     }

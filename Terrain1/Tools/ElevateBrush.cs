@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using Terrain.Tools.Areas;
+using Terrain1.Drawing;
 
 namespace Terrain.Tools;
 
@@ -18,9 +19,12 @@ public class ElevateBrush : TerrainEditorTool
 {
     public Area Area { get; init; } = new Circle();
     public override string UIName { get; set; } = nameof(ElevateBrush);
+    public override bool NeedsTransactionCommit { get => Terrain.TerrainVertexDraw.CanCommit && isDone; }
+    private bool isDone = false;
 
     public override void Update(GameTime time)
     {
+        isDone = false;
         base.Update(time);
 
         if (Area == null)
@@ -36,6 +40,10 @@ public class ElevateBrush : TerrainEditorTool
                 ModifyTerrain(ConvertToGridCell(vector), (float)time.Elapsed.TotalSeconds);
             }
         }
+        else if (EditorInput.Mouse.IsButtonReleased(MouseButton.Left))
+        {
+            isDone = true;
+        }
     }
 
     private void ModifyTerrain(Int2 center, float delta)
@@ -44,8 +52,12 @@ public class ElevateBrush : TerrainEditorTool
         {
             if (cell.Y >= 0 && cell.Y < Terrain.Size && cell.X >= 0 && cell.X < Terrain.Size)
             {
-                var currentHeight = Terrain.GetVertexHeight(cell.X, cell.Y);
-                Terrain.SetVertexHeight(cell.X, cell.Y, currentHeight + ((float)Strength/100) * delta); // Increase height
+                if( Terrain.TerrainVertexDraw is TerrainStandardVertexDraw std)
+                {
+                    std.SetVertexHeight(cell, ((float)Strength / 100) * delta); // Increase height
+
+                }
+
             }
         }
     }

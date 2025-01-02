@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using Terrain;
 using Terrain.Tools.Areas;
+using Terrain1.Drawing;
 
 namespace Terrain1.Tools;
 public class ColorBrush : TerrainEditorTool
@@ -17,9 +18,11 @@ public class ColorBrush : TerrainEditorTool
     public Area Area { get; set; } = new Circle();
 
     public TerrainMaskComputeColor Paint { get; set; } = new();
-
+    public override bool NeedsTransactionCommit { get => Terrain.TerrainVertexDraw.CanCommit && isDone; }
+    private bool isDone = false;
     public override void Update(GameTime gameTime)
     {
+        isDone = false;
         base.Update(gameTime);
         if (Area == null)
         {
@@ -39,10 +42,14 @@ public class ColorBrush : TerrainEditorTool
 
                 foreach (var c in cells)
                 {
-                    Terrain.SetVertexColor(c.X,c.Y, layerIndex);
+                    if(Terrain.TerrainVertexDraw is TerrainStandardVertexDraw standard)
+                        standard.SetVertexColor(c, layerIndex);
                 }
             }
-
+        }
+        else if (EditorInput.Mouse.IsButtonReleased(MouseButton.Left))
+        {
+            isDone = true;
         }
     }
 

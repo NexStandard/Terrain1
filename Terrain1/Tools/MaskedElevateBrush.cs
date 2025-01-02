@@ -16,9 +16,11 @@ public class MaskedElevateBrush : TerrainEditorTool
 {
     public Area Area { get; init; } = new Circle();
     public override string UIName { get; set; } = nameof(MaskedElevateBrush);
-
+    public override bool NeedsTransactionCommit { get => Terrain.TerrainVertexDraw.CanCommit && isDone; }
+    private bool isDone = false;
     public override void Update(GameTime time)
     {
+        isDone = false;
         base.Update(time);
 
         if (Area == null)
@@ -35,6 +37,10 @@ public class MaskedElevateBrush : TerrainEditorTool
                 var center = ConvertToGridCell(hitPoint);
                 ModifyTerrain(center, (float)time.Elapsed.TotalSeconds);
             }
+        }
+        else if (EditorInput.Mouse.IsButtonReleased(MouseButton.Left))
+        {
+            isDone = true;
         }
     }
 

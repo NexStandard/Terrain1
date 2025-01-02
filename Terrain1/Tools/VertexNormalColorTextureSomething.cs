@@ -14,6 +14,8 @@ namespace Terrain1.Tools;
 /// Describes a custom vertex format structure that contains position, normal and texture information.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 4)]
+[DataContract]
+[DataStyle(DataStyle.Compact)]
 public struct VertexPositionNormalColorTexture : IEquatable<VertexPositionNormalColorTexture>, IVertex
 {
     /// <summary>
@@ -47,6 +49,11 @@ public struct VertexPositionNormalColorTexture : IEquatable<VertexPositionNormal
 
     public Color Color;
     public Color Color1;
+    public Color Color2;
+    public Color Color3;
+    public Color Color4;
+    public Color Color5;
+    public Color Color6;
     /// <summary>
     /// Defines structure byte size.
     /// </summary>
@@ -60,7 +67,12 @@ public struct VertexPositionNormalColorTexture : IEquatable<VertexPositionNormal
         VertexElement.Normal<Vector3>(),
         VertexElement.TextureCoordinate<Vector2>(),
         VertexElement.Color<Color>(0),
-        VertexElement.Color<Color>(1));
+        VertexElement.Color<Color>(1),
+        VertexElement.Color<Color>(2),
+        VertexElement.Color<Color>(3),
+        VertexElement.Color<Color>(4),
+        VertexElement.Color<Color>(5),
+        VertexElement.Color<Color>(6));
 
     public bool Equals(VertexPositionNormalColorTexture other)
     {

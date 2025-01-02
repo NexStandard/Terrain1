@@ -26,7 +26,7 @@ Hierarchy:
                         Page: null
                         Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
                         Size: {X: 1.28, Y: 0.72, Z: 1.0}
-                    c10bfab512a0e0eace3008ec28d06a3f: !Terrain.Tools.ElevateBrush,Terrain1
+                    f13afda5dd8f850b3dc0418478dd24a3: !Terrain.Tools.ElevateBrush,Terrain1
                         Id: a56dc1bc-c298-42c8-9415-cc8924d53435
                         UIName: ElevateBrush
                         Active: true
@@ -34,13 +34,18 @@ Hierarchy:
                         Area: !Terrain.Tools.Areas.Circle,Terrain1
                             Radius: 3
                             OuterBuffer: 0.5
-                    298291ab89f24a06379d040fd363f929: !Terrain.TerrainGrid,Terrain1
+                    5a16a38c0e59b92dbf27bc506f140892: !Terrain.TerrainGrid,Terrain1
                         Id: 3d28e3d7-25f4-4cb0-9093-6513677c4145
                         ModifiedVertices: {}
                         VertexColor: {}
-                        Size: 256
+                        Size: 1024
                         CellSize: 1
                         Material: null
+                        TerrainVertexDraw: !Terrain1.Drawing.TerrainStandardVertexDraw,Terrain1
+                            Grid: null
+                            Save: false
+                            VertexCpuBuffer: null
+                            OldData: {}
                         VertexColors: {}
                         VertexColors1: {}
                         VertexColorMaterialMapping: {}
@@ -63,7 +68,7 @@ Hierarchy:
                         Name: null
                         Projection: Perspective
                         Slot: 3a185921-c1be-441d-b745-ff8606f5b767
-                    55c1d282e2f049b08367b5b7b4ecd692: !Terrain1.BasicCameraController,Terrain1
+                    8d0d3a11392a9b3831b21e0c08e23d00: !Terrain1.BasicCameraController,Terrain1
                         Id: 5626687b-7cbf-4ceb-809b-900ef0c9012b
                         Gamepad: false
                         KeyboardMovementSpeed: {X: 5.0, Y: 5.0, Z: 5.0}

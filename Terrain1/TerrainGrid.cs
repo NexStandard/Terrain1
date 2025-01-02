@@ -7,6 +7,7 @@ using Stride.Core.Serialization;
 using Stride.Core.Serialization.Contents;
 using Stride.Engine;
 using Stride.Engine.Design;
+using Stride.Graphics;
 using Stride.Rendering;
 using Stride.Rendering.Materials;
 using System;
@@ -14,19 +15,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using Terrain1.Drawing;
 using Terrain1.Tools;
 
 namespace Terrain;
 [Display("Terrain", Expand = ExpandRule.Once)]
 [ComponentCategory("Terrain")]
-[ContentSerializer(typeof(DataContentSerializer<TerrainGrid>))]
 [DefaultEntityComponentRenderer(typeof(TerrainGridProcessor))]
 public class TerrainGrid : StartupScript
 {
-    [DataMemberRange(1, 1024)]
+    [DataMemberRange(1, 1024,1,124,0)]
     public int Size { get; init; } = 256;
 
-    [DataMemberRange(1, 1024)]
+    [DataMemberRange(1, 1024,1 , 124,0)]
     public int CellSize { get; init; } = 1;
 
     /// <summary>
@@ -40,8 +41,8 @@ public class TerrainGrid : StartupScript
     public float TotalHeight => Size * CellSize;
 
     public Material Material { get; set; }
+    public TerrainVertexDraw TerrainVertexDraw { get; set; } = new TerrainStandardVertexDraw();
 
-    public void Nothing(MaterialDescriptor material) { }
     public Dictionary<Int2, Color> VertexColors { get; } = new();
     public Dictionary<Int2, Color> VertexColors1 { get; } = new();
     public Dictionary<Int2, int> VertexColorMaterialMapping { get; } = new();
@@ -58,7 +59,7 @@ public class TerrainGrid : StartupScript
     {
         Entity.Add(new ModelComponent());
     }
-    public VertexPositionNormalColorTexture[] GenerateVertices()
+    public List<VertexPositionNormalColorTexture> GenerateVertices()
     {
         var vertexCount = (Size + 1) * (Size + 1);
         var vertices = new VertexPositionNormalColorTexture[vertexCount];
@@ -91,7 +92,7 @@ public class TerrainGrid : StartupScript
             }
         }
 
-        return vertices;
+        return vertices.ToList();
     }
     public int[] GenerateIndices()
     {
@@ -150,19 +151,7 @@ public class TerrainGrid : StartupScript
         return VertexHeights.TryGetValue(key, out var height) ? height : 0f;
     }
 
-    public void SetVertexColor(int x, int y, int colorLayerIndex)
-    {
-        var k = new Int2(x, y);
-        VertexColorMaterialMapping[k] = colorLayerIndex;
-        ModifiedVertices.Add(k);
-    }
-    public void SetVertexColor1(int x, int y, Color color)
-    {
-        var k = new Int2(x, y);
 
-        VertexColors1[k] = color;
-        ModifiedVertices.Add(k);
-    }
     // Get the height of a point in the terrain
     public float GetHeightAtPosition(float x, float z)
     {

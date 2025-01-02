@@ -1,7 +1,9 @@
 ﻿namespace Terrain;
 
+using Stride.Assets.Presentation.AssetEditors.SceneEditor.ViewModels;
 using Stride.Core.Annotations;
 using Stride.Core.Mathematics;
+using Stride.Core.Quantum;
 using Stride.Engine;
 using Stride.Games;
 using Stride.Graphics;
@@ -41,6 +43,7 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
         }
         foreach (var grid in ComponentDatas)
         {
+            grid.Key.TerrainVertexDraw.Grid ??= grid.Key;
             // Process TerrainEditorTools
             foreach (var component in grid.Key.Entity.Components)
             {
@@ -77,120 +80,24 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
         var commandList = sceneSystem.Game.GraphicsContext.CommandList;
         foreach (var grid in ComponentDatas)
         {
+            if (grid.Key.TerrainVertexDraw is null)
+            {
+                return;
+            }
+
+            grid.Key.TerrainVertexDraw.TerrainGraphicsDevice ??= graphicsDevice;
+            grid.Key.TerrainVertexDraw.TerrainGraphicsCommandList ??= commandList;
+            grid.Key.TerrainVertexDraw.Grid ??= grid.Key;
+            grid.Key.TerrainVertexDraw.GridRenderData ??= grid.Value;
+
             if (grid.Value.Size != grid.Key.Size || grid.Value.CellSize != grid.Key.CellSize || (grid.Value.IndexBuffer is null && grid.Value.VertexBuffer is null))
             {
-                var vertices = grid.Key.GenerateVertices();
-                var indices = grid.Key.GenerateIndices();
-                grid.Value.Size = grid.Key.Size;
-                grid.Value.CellSize = grid.Key.CellSize;
-                var indexBuffer = Stride.Graphics.Buffer.Index.New(graphicsDevice, indices, GraphicsResourceUsage.Default);
-                grid.Value.IndexBuffer = indexBuffer;
-                var vertexBuffer = Stride.Graphics.Buffer.Vertex.New(graphicsDevice, vertices, GraphicsResourceUsage.Default);
-                grid.Value.VertexBuffer = vertexBuffer;
-                var mesh = new Stride.Rendering.Mesh
-                {
-                    Draw = new Stride.Rendering.MeshDraw
-                    {
-                        PrimitiveType = Stride.Graphics.PrimitiveType.TriangleList,
-                        DrawCount = indices.Length,
-                        IndexBuffer = new IndexBufferBinding(grid.Value.IndexBuffer, true, indices.Length),
-                        VertexBuffers = new[] { new VertexBufferBinding(grid.Value.VertexBuffer, VertexPositionNormalColorTexture.Layout, grid.Value.VertexBuffer.ElementCount) },
-                    },
-                    MaterialIndex = 0,
-                };
-                var model = new Model()
-                {
-                    Meshes = [mesh],
-                };
-
-                grid.Value.ModelComponent.Model.Meshes.Clear();
-                grid.Value.ModelComponent.Model.Meshes.Add(mesh);
-                var comp = grid.Key.Entity.Get<ModelComponent>();
-                if (comp == null)
-                {
-                    comp = new ModelComponent()
-                    {
-                        Model = model
-                    };
-                    grid.Key.Entity.Add(comp);
-
-                }
-                else
-                {
-                    comp.Model = model;
-                }
-                if (grid.Key.Material != null)
-                {
-                    grid.Value.ModelComponent.Materials.Clear();
-                    grid.Value.ModelComponent.Materials.Add(0, grid.Key.Material);
-                    comp.Model.Meshes[0].MaterialIndex = 0;
-                    comp.Model.Materials.Add(grid.Key.Material);
-                }
+                grid.Key.TerrainVertexDraw.Rebuild();
             }
-            if (grid.Key.ModifiedVertices.Count > 0)
-            {
-                foreach (var location in grid.Key.ModifiedVertices)
-                {
-                    var x = location.X * grid.Key.CellSize;
-                    var z = location.Y * grid.Key.CellSize;
-
-                    var index = (location.Y * (grid.Key.Size + 1)) + location.X;
-
-                    // Prepare the updated vertex
-                    var updatedVertex = new VertexPositionNormalColorTexture
-                    {
-                        Position = new Vector3(x, grid.Key.GetVertexHeight(location.X, location.Y), z),
-                        Normal = Vector3.UnitY,
-                        TextureCoordinate = new Vector2(
-                            (float)location.X / grid.Key.Size,
-                            (float)location.Y / grid.Key.Size
-                        )
-                        , Color = Color.Black,
-                        Color1 = Color.Black
-                    };
-                    if (grid.Key.VertexColorMaterialMapping.TryGetValue(new Int2(x,z), out var target))
-                    {
-                        var x1 = target / 4;
-                        var y = target % 4;
-                        var color = y switch
-                        {
-                            0 => Color.Red,
-                            1 => Color.Green,
-                            2 => Color.Blue,
-                            _ => Color.Black,
-                        };
-                        if (x1 == 0)
-                        {
-                            updatedVertex.Color = color;
-                        }
-                        else if (x1 == 1)
-                        {
-                            updatedVertex.Color1 = color;
-                        }
-                    }
-                    File.WriteAllText("D:\\Colors", updatedVertex.Color.ToString() + updatedVertex.Color1 + target);
-                    // Update the vertex directly in the GPU buffer at the correct offset
-                    grid.Value.VertexBuffer.SetData(
-                        commandList,
-                        ref updatedVertex, // Update only this single vertex
-                        index * VertexPositionNormalColorTexture.Layout.CalculateSize()
-                    );
-                }
-
-                // Clear the modified vertices list after updating
-                grid.Key.ModifiedVertices.Clear();
-            }
-                
-
-            if (grid.Key.Randomize)
-            {
-                grid.Key.SetRandomHeights();
-                grid.Key.Randomize = false;
-            }
-            if (grid.Key.Flatten)
+            
+            if(grid.Key.TerrainVertexDraw.Save)
             {
                 OnResetPrefabNextYPositionButtonClicked(grid.Key);
-                grid.Key.Flatten = false;
             }
         }
     }
@@ -208,6 +115,7 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
 
             var sceneEditorView = window.GetChildOfType<Stride.Assets.Presentation.AssetEditors.SceneEditor.Views.SceneEditorView>();
             var sceneEditorVm = sceneEditorView?.DataContext as Stride.Assets.Presentation.AssetEditors.SceneEditor.ViewModels.SceneEditorViewModel;
+
             if (sceneEditorVm != null)
             {
                 var levelEditorEntity = levelEditComp.Entity;
@@ -219,18 +127,12 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                 var vmLevelEditComp = vmLevelEditorEntity.Get<TerrainGrid>();
 
                 var levelEditCompNode = sceneEditorVm.Session.AssetNodeContainer.GetNode(vmLevelEditComp);
-
-                var nextYPosNodeRaw = levelEditCompNode[nameof(TerrainGrid.VertexHeightsE)];
-                var nextYPosNode = nextYPosNodeRaw as Stride.Core.Assets.Quantum.IAssetMemberNode;
-
-                using (var transaction = sceneEditorVm.UndoRedoService.CreateTransaction())
-                {
-                    nextYPosNode.Update(grid.VertexHeightsE);
-                    sceneEditorVm.UndoRedoService.SetName(transaction, "Level Editor Reset prefab next Y position");
-                }
+                grid.TerrainVertexDraw.SaveTransaction(sceneEditorVm, levelEditCompNode);
             }
         });
     }
+
+
 
     protected override void OnEntityComponentRemoved(Entity entity, TerrainGrid component, TerrainGridRenderData data)
     {
