@@ -57,9 +57,9 @@ file sealed class NexSourceGenerated_Terrain1_YamlExtensionsVector2 : YamlSerial
 
     public override void Read(IYamlReader stream, ref Stride.Core.Mathematics.Vector2 value, ref ParseResult parseResult)
     {
-        var __TEMP__X = default(int);
+        var __TEMP__X = default(float);
         ParseResult __TEMP__RESULT__X = new();
-        var __TEMP__Y = default(int);
+        var __TEMP__Y = default(float);
         ParseResult __TEMP__RESULT__Y = new();
 
         stream.ReadMapping((key) => {
@@ -77,7 +77,7 @@ file sealed class NexSourceGenerated_Terrain1_YamlExtensionsVector2 : YamlSerial
         var __TEMP__RESULT = new Stride.Core.Mathematics.Vector2
         {
             X = __TEMP__X,
-            Y = __TEMP__Y
+            Y = __TEMP__Y,
         };
 
         value = __TEMP__RESULT;

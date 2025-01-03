@@ -18,5 +18,5 @@ Hierarchy:
                         Children: {}
                     f8f8f84f33ed976d894ff7690993734e: !ModelComponent
                         Id: 64387ce6-908c-490b-a7c6-781b23c235e2
-                        Model: 35c360d5-1020-4e9b-bdf6-9b9fd1374767:Sphere
+                        Model: null
                         Materials: {}

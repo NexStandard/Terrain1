@@ -1,6 +1,0 @@
-!Texture
-Id: eb15a5db-c2b6-44bb-8e7a-ffa5a0f26d81
-SerializedVersion: {Stride: 2.0.0.0}
-Tags: []
-Source: !file ../Resources/Layer4.png
-Type: !GrayscaleTextureType {}

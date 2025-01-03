@@ -23,6 +23,7 @@ Hierarchy:
                         Children: {}
                     bc6cdbc124a088faa8fd9d0172140f8d: !UIComponent
                         Id: 172d0098-59fd-47c9-9ffd-82751dd02cf5
+                        Enabled: false
                         Page: null
                         Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
                         Size: {X: 1.28, Y: 0.72, Z: 1.0}
@@ -34,18 +35,29 @@ Hierarchy:
                         Area: !Terrain.Tools.Areas.Circle,Terrain1
                             Radius: 3
                             OuterBuffer: 0.5
-                    5a16a38c0e59b92dbf27bc506f140892: !Terrain.TerrainGrid,Terrain1
-                        Id: 3d28e3d7-25f4-4cb0-9093-6513677c4145
+                    6e382af49382d65739fe17a326ac961d: !Terrain1.Tools.ColorBrush,Terrain1
+                        Id: a84ce054-cb8d-44a1-b9f6-25b2f10414d8
+                        UIName: ColorBrush
+                        Active: true
+                        Strength: 100
+                        Area: !Terrain.Tools.Areas.Circle,Terrain1
+                            Radius: 3
+                            OuterBuffer: 0.5
+                        Paint:
+                            TerrainLayerIndex: 5
+                    7e4b27dd93112d0c9cc066c5ef7cd786: !Terrain.TerrainGrid,Terrain1
+                        Id: 752a4906-fe93-4c25-8818-90928d9244b8
                         ModifiedVertices: {}
                         VertexColor: {}
                         Size: 1024
                         CellSize: 1
-                        Material: null
+                        Material: 68fb1b7d-16bb-4ed0-a8d7-67473ad10acb:Material
                         TerrainVertexDraw: !Terrain1.Drawing.TerrainStandardVertexDraw,Terrain1
                             Grid: null
                             Save: false
+                            Path: null
+                            Load: false
                             VertexCpuBuffer: null
-                            OldData: {}
                         VertexColors: {}
                         VertexColors1: {}
                         VertexColorMaterialMapping: {}
@@ -114,7 +126,7 @@ Hierarchy:
                         Children: {}
                     c66f01409e3c1fecb5a34aad33323496: !BackgroundComponent
                         Id: 7be38931-2e6c-403e-b616-491b2617dc5b
-                        Texture: 95811d08-35a8-4ea2-b08f-9fc39a438d4c:Skybox texture
+                        Texture: null
                     04cf5bc88c530898bcaa6910daa515b9: !LightComponent
                         Id: c8fca334-c4d8-453c-9fb2-460a604d2a94
                         Type: !LightSkybox

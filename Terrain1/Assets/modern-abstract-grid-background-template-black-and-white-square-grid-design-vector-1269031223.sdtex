@@ -1,7 +1,0 @@
-!Texture
-Id: 9f8a9233-5d44-4183-8559-2f3b239d0083
-SerializedVersion: {Stride: 2.0.0.0}
-Tags: []
-Source: !file ../Resources/modern-abstract-grid-background-template-black-and-white-square-grid-design-vector-1269031223.jpg
-Type: !ColorTextureType
-    ColorKeyColor: {R: 255, G: 0, B: 255, A: 255}

@@ -1,0 +1,7 @@
+!Texture
+Id: 12f33e7f-d6da-4d10-85b8-a740a2e6eb93
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Source: !file ../Resources/128242_header_small-2437950460.jpg
+Type: !ColorTextureType
+    ColorKeyColor: {R: 255, G: 0, B: 255, A: 255}

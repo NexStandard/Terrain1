@@ -1,0 +1,7 @@
+!Texture
+Id: b3f60891-4ba2-4b7b-a806-0384d722432e
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Source: !file ../Resources/1000_F_91319454_PprBvmyn6jNXarEYF8OHhTdFJM8uBupR-4207958606.jpg
+Type: !ColorTextureType
+    ColorKeyColor: {R: 255, G: 0, B: 255, A: 255}

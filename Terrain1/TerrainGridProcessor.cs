@@ -95,7 +95,7 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                 grid.Key.TerrainVertexDraw.Rebuild();
             }
             
-            if(grid.Key.TerrainVertexDraw.Save)
+            if(grid.Key.TerrainVertexDraw.Save || grid.Key.TerrainVertexDraw.Load)
             {
                 OnResetPrefabNextYPositionButtonClicked(grid.Key);
             }
@@ -127,7 +127,15 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
                 var vmLevelEditComp = vmLevelEditorEntity.Get<TerrainGrid>();
 
                 var levelEditCompNode = sceneEditorVm.Session.AssetNodeContainer.GetNode(vmLevelEditComp);
-                grid.TerrainVertexDraw.SaveTransaction(sceneEditorVm, levelEditCompNode);
+                if(grid.TerrainVertexDraw.Save)
+                {
+                    grid.TerrainVertexDraw.SaveTransaction(sceneEditorVm, levelEditCompNode);
+
+                }
+                else if (grid.TerrainVertexDraw.Load)
+                {
+                    grid.TerrainVertexDraw.LoadTransaction(sceneEditorVm, levelEditCompNode);
+                }
             }
         });
     }

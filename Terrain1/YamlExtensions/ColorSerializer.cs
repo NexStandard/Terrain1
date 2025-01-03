@@ -40,7 +40,7 @@ file sealed class NexSourceGenerated_Terrain_Tools_UiColor : YamlSerializer<Colo
     private static readonly byte[] UTF8A = new byte[] { 65 };
 
     protected override DataStyle Style { get; } = DataStyle.Compact;
-    public override void Write(IYamlWriter stream, Color value, DataStyle style = DataStyle.Compact)
+    public override void Write(IYamlWriter stream, Color value, DataStyle style = DataStyle.Any)
     {
         style = DataStyle.Any == style? Style : style;
         stream.BeginMapping(style);

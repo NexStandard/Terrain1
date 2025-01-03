@@ -46,9 +46,9 @@ file sealed class NexSourceGenerated_Terrain1_YamlExtensionsVector3 : YamlSerial
     private static readonly byte[] UTF8Z = new byte[] { 90 };
     protected override DataStyle Style { get; } = DataStyle.Compact;
 
-    public override void Write(IYamlWriter stream, Stride.Core.Mathematics.Vector3 value, DataStyle style = DataStyle.Compact)
+    public override void Write(IYamlWriter stream, Stride.Core.Mathematics.Vector3 value, DataStyle style = DataStyle.Any)
     {
-        stream.BeginMapping(style == DataStyle.Any ? DataStyle.Compact : style);
+        stream.BeginMapping(style == DataStyle.Any ? Style : style);
         stream.WriteTag("!Stride.Core.Mathematics.Vector3,Terrain1");
         stream.Write("X", value.X, style);
         stream.Write("Y", value.Y, style);
@@ -59,11 +59,11 @@ file sealed class NexSourceGenerated_Terrain1_YamlExtensionsVector3 : YamlSerial
 
     public override void Read(IYamlReader stream, ref Stride.Core.Mathematics.Vector3 value, ref ParseResult parseResult)
     {
-        var __TEMP__X = default(int);
+        var __TEMP__X = default(float);
         ParseResult __TEMP__RESULT__X = new();
-        var __TEMP__Y = default(int);
+        var __TEMP__Y = default(float);
         ParseResult __TEMP__RESULT__Y = new();
-        var __TEMP__Z = default(int);
+        var __TEMP__Z = default(float);
         ParseResult __TEMP__RESULT__Z = new();
 
         stream.ReadMapping((key) => {

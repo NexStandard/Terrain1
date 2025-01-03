@@ -1,0 +1,17 @@
+!MaterialAsset
+Id: b180183d-f7db-4274-831a-860749a305c6
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Attributes:
+    Diffuse: !MaterialDiffuseMapFeature
+        DiffuseMap: !ComputeTextureColor
+            Texture: b3f60891-4ba2-4b7b-a806-0384d722432e:1000_F_91319454_PprBvmyn6jNXarEYF8OHhTdFJM8uBupR-4207958606
+            FallbackValue:
+                Value: {R: 1.0, G: 0.8392157, B: 0.43529412, A: 1.0}
+            Scale: {X: 1.0, Y: 1.0}
+            Offset: {X: 0.0, Y: 0.0}
+            Swizzle: null
+    DiffuseModel: !MaterialDiffuseLambertModelFeature {}
+    Overrides:
+        UVScale: {X: 1.0, Y: 1.0}
+Layers: {}

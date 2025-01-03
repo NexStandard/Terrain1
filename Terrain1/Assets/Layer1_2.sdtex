@@ -1,6 +1,0 @@
-!Texture
-Id: dfa3209e-8bb8-4dfd-8cd8-4eef15dcba36
-SerializedVersion: {Stride: 2.0.0.0}
-Tags: []
-Source: !file ../Resources/Layer1.png
-Type: !GrayscaleTextureType {}
