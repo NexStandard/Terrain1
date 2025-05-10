@@ -21,50 +21,23 @@ Hierarchy:
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
-                    bc6cdbc124a088faa8fd9d0172140f8d: !UIComponent
-                        Id: 172d0098-59fd-47c9-9ffd-82751dd02cf5
-                        Enabled: false
-                        Page: null
-                        Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
-                        Size: {X: 1.28, Y: 0.72, Z: 1.0}
-                    f13afda5dd8f850b3dc0418478dd24a3: !Terrain.Tools.ElevateBrush,Terrain1
-                        Id: a56dc1bc-c298-42c8-9415-cc8924d53435
-                        UIName: ElevateBrush
-                        Active: true
-                        Strength: 100
-                        Area: !Terrain.Tools.Areas.Circle,Terrain1
-                            Radius: 3
-                            OuterBuffer: 0.5
-                    6e382af49382d65739fe17a326ac961d: !Terrain1.Tools.ColorBrush,Terrain1
-                        Id: a84ce054-cb8d-44a1-b9f6-25b2f10414d8
-                        UIName: ColorBrush
-                        Active: true
-                        Strength: 100
-                        Area: !Terrain.Tools.Areas.Circle,Terrain1
-                            Radius: 3
-                            OuterBuffer: 0.5
-                        Paint:
-                            TerrainLayerIndex: 5
-                    7e4b27dd93112d0c9cc066c5ef7cd786: !Terrain.TerrainGrid,Terrain1
-                        Id: 752a4906-fe93-4c25-8818-90928d9244b8
-                        ModifiedVertices: {}
-                        VertexColor: {}
-                        Size: 1024
-                        CellSize: 1
-                        Material: 68fb1b7d-16bb-4ed0-a8d7-67473ad10acb:Material
-                        TerrainVertexDraw: !Terrain1.Drawing.TerrainStandardVertexDraw,Terrain1
-                            Grid: null
-                            Save: false
-                            Path: null
-                            Load: false
-                            VertexCpuBuffer: null
-                        VertexColors: {}
-                        VertexColors1: {}
-                        VertexColorMaterialMapping: {}
-                        HeightTest: {}
-                        VertexHeightsE: {}
-                        Randomize: false
-                        Flatten: false
+                    2e65d55450c809673b9a17476979a8f0: !ModelComponent
+                        Id: 050acc49-76d2-46ca-9374-a6e14c398007
+                        Model: null
+                        Materials: {}
+                    27809bf5be9c5fad6f1753306c4acf5f: !Terrain1.TextureAtlasBuilder,Terrain1
+                        Id: 727d4942-d4e6-4e33-a74d-2640484dcc94
+                    91ceb8714d38b793ad0eb07257a0055c: !Terrain1.NexMesh,Terrain1
+                        Id: 7743e1ab-62fb-47ab-bb30-3757edc9a159
+                        DirtMaterial: f9dd52ae-39b4-4d2b-9962-692ba80d9967:Farm
+                        Blend: a8a7d0aa-e482-4fa8-bd89-960f19a2c180:Grass
+                        Gras: 5c29f94f-e1c2-4abf-9216-28113598aa88:Rock
+                        Terrain: f9dd52ae-39b4-4d2b-9962-692ba80d9967:Farm
+                        ModelComponent: ref!! 050acc49-76d2-46ca-9374-a6e14c398007
+                        Bob: db55dc0d-6c06-42ff-9f01-3b8fe9a712c9:il_1588xN.3058108485_26pa
+                        Bob2: 3e1654d2-9af6-4c9a-823d-4d04a9b94f64:Farmland0004_1_600-809065478
+                        TileSize: 256
+                        TileMaterials: null
         -   Entity:
                 Id: 90651f32-f178-4f7f-bf68-96c2da02b041
                 Name: Camera

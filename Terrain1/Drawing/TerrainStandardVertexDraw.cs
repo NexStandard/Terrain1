@@ -2,11 +2,9 @@
 using NexYaml;
 using NexYaml.Serialization;
 using NexYaml.Serializers;
-using Stride.Assets.Presentation.AssetEditors.SceneEditor.ViewModels;
 using Stride.Core;
 using Stride.Core.Extensions;
 using Stride.Core.Mathematics;
-using Stride.Core.Quantum;
 using Stride.Engine;
 using Stride.Graphics;
 using Stride.Rendering;
@@ -333,46 +331,6 @@ public class TerrainStandardVertexDraw : TerrainVertexDraw
     public override void LoadTransaction()
     {
         var registry = Create();
-        var buff = Yaml.Read<BufferWrapper>(Path);
-        VertexCpuBuffer = buff.VertexBuffer;
-    }
-    public override void SaveTransaction(SceneEditorViewModel sceneEditorVm, IObjectNode levelEditCompNode)
-    {
-        var nextYPosNodeRaw = levelEditCompNode["TerrainVertexDraw"];
-
-        var oldDataQuantum = nextYPosNodeRaw as Stride.Core.Assets.Quantum.IAssetMemberNode;
-        using var transaction = sceneEditorVm.UndoRedoService.CreateTransaction();
-
-        var registry = Create();
-        var x = oldDataQuantum.Target[nameof(Save)];
-        x.Update(false);
-        var w = new BufferWrapper()
-        {
-            VertexBuffer = VertexCpuBuffer
-        };
-        var buffer = new ArrayBufferWriter<byte>();
-        using var stream = new FileStream(Path, FileMode.OpenOrCreate);
-        using var writer = new StreamWriter(stream,Encoding.UTF8);
-        Stopwatch stopwatch = Stopwatch.StartNew();
-        Yaml.Write(w, writer,options: registry);
-        stopwatch.Stop();
-        File.WriteAllText("D:\\Time1", stopwatch.Elapsed.TotalSeconds.ToString());
-        
-        sceneEditorVm.UndoRedoService.SetName(transaction, "Update Terraingrid");
-    }
-    public override void LoadTransaction(SceneEditorViewModel sceneEditorVm, IObjectNode levelEditCompNode)
-    {
-        var nextYPosNodeRaw = levelEditCompNode["TerrainVertexDraw"];
-
-        var oldDataQuantum = nextYPosNodeRaw as Stride.Core.Assets.Quantum.IAssetMemberNode;
-        using var transaction = sceneEditorVm.UndoRedoService.CreateTransaction();
-        var x = oldDataQuantum.Target[nameof(Load)];
-        x.Update(false);
-        var registry = Create();
-        var s = File.ReadAllText(Path);
-        var buff = Yaml.Read<BufferWrapper>(s,registry);
-        VertexCpuBuffer = buff.VertexBuffer;
-        Rebuild(buff.VertexBuffer);
     }
 }
 [DataContract]

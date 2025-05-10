@@ -1,9 +1,6 @@
 ﻿namespace Terrain;
 
-using Stride.Assets.Presentation.AssetEditors.SceneEditor.ViewModels;
 using Stride.Core.Annotations;
-using Stride.Core.Mathematics;
-using Stride.Core.Quantum;
 using Stride.Engine;
 using Stride.Games;
 using Stride.Graphics;
@@ -97,48 +94,11 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
             
             if(grid.Key.TerrainVertexDraw.Save || grid.Key.TerrainVertexDraw.Load)
             {
-                OnResetPrefabNextYPositionButtonClicked(grid.Key);
             }
         }
     }
-    private void OnResetPrefabNextYPositionButtonClicked(TerrainGrid grid)
-    {
-        var kv = ComponentDatas.FirstOrDefault();
-        var levelEditComp = kv.Key;
-
-        var editorVm = Stride.Core.Assets.Editor.ViewModel.EditorViewModel.Instance;
-        var gsVm = Stride.GameStudio.ViewModels.GameStudioViewModel.GameStudio;
-        gsVm.StrideAssets.Dispatcher.Invoke(() =>
-        {
-            // Application.Current must be accessed on the UI thread
-            var window = System.Windows.Application.Current.MainWindow as Stride.GameStudio.View.GameStudioWindow;
-
-            var sceneEditorView = window.GetChildOfType<Stride.Assets.Presentation.AssetEditors.SceneEditor.Views.SceneEditorView>();
-            var sceneEditorVm = sceneEditorView?.DataContext as Stride.Assets.Presentation.AssetEditors.SceneEditor.ViewModels.SceneEditorViewModel;
-
-            if (sceneEditorVm != null)
-            {
-                var levelEditorEntity = levelEditComp.Entity;
-
-                var root = sceneEditorVm.HierarchyRoot;
-                var levelEditorEntityAssetPart = root.Asset.Asset.Hierarchy.Parts.FirstOrDefault(x => x.Value.Entity.Id == levelEditorEntity.Id);
-                var vmLevelEditorEntity = levelEditorEntityAssetPart.Value.Entity;
-
-                var vmLevelEditComp = vmLevelEditorEntity.Get<TerrainGrid>();
-
-                var levelEditCompNode = sceneEditorVm.Session.AssetNodeContainer.GetNode(vmLevelEditComp);
-                if(grid.TerrainVertexDraw.Save)
-                {
-                    grid.TerrainVertexDraw.SaveTransaction(sceneEditorVm, levelEditCompNode);
-
-                }
-                else if (grid.TerrainVertexDraw.Load)
-                {
-                    grid.TerrainVertexDraw.LoadTransaction(sceneEditorVm, levelEditCompNode);
-                }
-            }
-        });
-    }
+    
+    
 
 
 

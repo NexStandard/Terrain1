@@ -1,8 +1,7 @@
-﻿using Stride.Assets.Presentation.AssetEditors.SceneEditor.ViewModels;
+﻿
 using Stride.Core;
 using Stride.Core.IO;
 using Stride.Core.Mathematics;
-using Stride.Core.Quantum;
 using Stride.Engine;
 using Stride.Graphics;
 using System;
@@ -67,13 +66,9 @@ public abstract class TerrainVertexDraw
     [DataMember]
     public virtual bool Save { get; set; }
     
-    public virtual UPath Path { get; set; }
-
 
     public virtual bool Load { get; set; }
 
-    public abstract void SaveTransaction(SceneEditorViewModel sceneEditorVm, IObjectNode levelEditCompNode);
-    public abstract void SaveTransaction();
-    public abstract void LoadTransaction(SceneEditorViewModel sceneEditorVm, IObjectNode levelEditCompNode);
-    public abstract void LoadTransaction();
+      public abstract void SaveTransaction();
+      public abstract void LoadTransaction();
 }
