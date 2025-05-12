@@ -59,10 +59,10 @@ public class TerrainGrid : StartupScript
     {
         Entity.Add(new ModelComponent());
     }
-    public List<VertexPositionNormalColorTexture> GenerateVertices()
+    public List<TerrainVertex> GenerateVertices()
     {
         var vertexCount = (Size + 1) * (Size + 1);
-        var vertices = new VertexPositionNormalColorTexture[vertexCount];
+        var vertices = new TerrainVertex[vertexCount];
 
         var actualCellWidth = TotalWidth / Size;
         var actualCellHeight = TotalHeight / Size;
@@ -81,13 +81,11 @@ public class TerrainGrid : StartupScript
                 var color = Color.Black; // Default or calculated color
                 VertexColors[new Int2(col, row)] = color;
 
-                vertices[index] = new VertexPositionNormalColorTexture
+                vertices[index] = new TerrainVertex
                 {
                     Position = position,
                     Normal = Vector3.UnitY,
-                    TextureCoordinate = new Vector2((float)col / Size, (float)row / Size),
-                    Color = color,
-                    Color1 = color,
+                    TextureCoordinate = new Vector2((float)col / Size, (float)row / Size)
                 };
             }
         }

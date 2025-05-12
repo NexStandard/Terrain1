@@ -25,13 +25,13 @@ namespace Terrain1.Drawing;
 public class TerrainStandardVertexDraw : TerrainVertexDraw
 {
     [DataMemberIgnore]
-    public Dictionary<Int2, VertexPositionNormalColorTexture> NewData = new();
+    public Dictionary<Int2, TerrainVertex> NewData = new();
 
     [DataMemberIgnore]
     public Dictionary<Int2, int> VertexColorMaterialMapping { get; } = new();
 
     [Display(Browsable = false)]
-    public List<VertexPositionNormalColorTexture> VertexCpuBuffer;
+    public List<TerrainVertex> VertexCpuBuffer;
 
     public override void Rebuild()
     {
@@ -51,7 +51,7 @@ public class TerrainStandardVertexDraw : TerrainVertexDraw
                 PrimitiveType = PrimitiveType.TriangleList,
                 DrawCount = indices.Length,
                 IndexBuffer = new IndexBufferBinding(GridRenderData.IndexBuffer, true, indices.Length),
-                VertexBuffers = new[] { new VertexBufferBinding(GridRenderData.VertexBuffer, VertexPositionNormalColorTexture.Layout, GridRenderData.VertexBuffer.ElementCount) },
+                VertexBuffers = new[] { new VertexBufferBinding(GridRenderData.VertexBuffer, TerrainVertex.Layout, GridRenderData.VertexBuffer.ElementCount) },
             },
             MaterialIndex = 0,
         };
@@ -84,7 +84,7 @@ public class TerrainStandardVertexDraw : TerrainVertexDraw
             comp.Model.Materials.Add(Grid.Material);
         }
     }
-    private void Rebuild(List<VertexPositionNormalColorTexture> vertexPositionNormalColorTextures)
+    private void Rebuild(List<TerrainVertex> vertexPositionNormalColorTextures)
     {
         var vertexCount = (Grid.Size + 1) * (Grid.Size + 1);
         VertexCpuBuffer = vertexPositionNormalColorTextures;
@@ -102,7 +102,7 @@ public class TerrainStandardVertexDraw : TerrainVertexDraw
                 PrimitiveType = PrimitiveType.TriangleList,
                 DrawCount = indices.Length,
                 IndexBuffer = new IndexBufferBinding(GridRenderData.IndexBuffer, true, indices.Length),
-                VertexBuffers = new[] { new VertexBufferBinding(GridRenderData.VertexBuffer, VertexPositionNormalColorTexture.Layout, GridRenderData.VertexBuffer.ElementCount) },
+                VertexBuffers = new[] { new VertexBufferBinding(GridRenderData.VertexBuffer, TerrainVertex.Layout, GridRenderData.VertexBuffer.ElementCount) },
             },
             MaterialIndex = 0,
         };
@@ -142,13 +142,13 @@ public class TerrainStandardVertexDraw : TerrainVertexDraw
             throw new System.Exception();
         }
         var index = (cell.Y * (Grid.Size + 1)) + cell.X;
-        var x = (VertexPositionNormalColorTexture)vertex;
+        var x = (TerrainVertex)vertex;
         VertexCpuBuffer[index] = x;
         // Update the vertex directly in the GPU buffer at the correct offset
         GridRenderData.VertexBuffer.SetData(
             TerrainGraphicsCommandList,
             ref x, // Update only this single vertex
-            index * VertexPositionNormalColorTexture.Layout.CalculateSize()
+            index * TerrainVertex.Layout.CalculateSize()
         );
     }
 
@@ -173,104 +173,16 @@ public class TerrainStandardVertexDraw : TerrainVertexDraw
         VertexCpuBuffer[index] = currentVertex;
         Rebuild(cell, currentVertex);
     }
-    private VertexPositionNormalColorTexture SetIndexAsColor(VertexPositionNormalColorTexture vertex, int colorIndex)
+    private TerrainVertex SetIndexAsColor(TerrainVertex vertex, int colorIndex)
     {
         var x1 = colorIndex / 4;
         var y = colorIndex % 4;
-        var color = y switch
-        {
-            0 => Color.Red,
-            1 => Color.Green,
-            2 => Color.Blue,
-            _ => Color.Black,
-        };
-        var col = new Color(0, 0, 0, 0);
-        if (x1 == 0)
-        {
-            vertex.Color = color;
-            vertex.Color1 = col;
-            vertex.Color2 = col;
-            vertex.Color3 = col;
-            vertex.Color4 = col;
-            vertex.Color5 = col;
-            vertex.Color6 = col;
-        }
-        else if(x1 == 1)
-        {
-            vertex.Color = col;
-            vertex.Color1 = color;
-            vertex.Color2 = col;
-            vertex.Color3 = col;
-            vertex.Color4 = col;
-            vertex.Color5 = col;
-            vertex.Color6 = col;
-        }
-        else if (x1 == 2)
-        {
-            vertex.Color = col;
-            vertex.Color1 = col;
-            vertex.Color2 = color;
-            vertex.Color3 = col;
-            vertex.Color4 = col;
-            vertex.Color5 = col;
-            vertex.Color6 = col;
-        }
-        else if (x1 == 3)
-        {
-            vertex.Color = col;
-            vertex.Color1 = col;
-            vertex.Color2 = col;
-            vertex.Color3 = color;
-            vertex.Color4 = col;
-            vertex.Color5 = col;
-            vertex.Color6 = col;
-        }
-        else if (x1 == 4)
-        {
-            vertex.Color = col;
-            vertex.Color1 = col;
-            vertex.Color2 = col;
-            vertex.Color3 = col;
-            vertex.Color4 = color;
-            vertex.Color5 = col;
-            vertex.Color6 = col;
-        }
-        else if (x1 == 5)
-        {
-            vertex.Color = col;
-            vertex.Color1 = col;
-            vertex.Color2 = col;
-            vertex.Color3 = col;
-            vertex.Color4 = col;
-            vertex.Color5 = color;
-            vertex.Color6 = col;
-        }
-        else if (x1 == 6)
-        {
-            vertex.Color = col;
-            vertex.Color1 = col;
-            vertex.Color2 = col;
-            vertex.Color3 = col;
-            vertex.Color4 = col;
-            vertex.Color5 = col;
-            vertex.Color6 = color;
-        }
-        else
-        {
-            vertex.Color = col;
-            vertex.Color1 = col;
-            vertex.Color2 = col;
-            vertex.Color3 = col;
-            vertex.Color4 = col;
-            vertex.Color5 = col;
-            vertex.Color6 = col;
-        }
         return vertex;
     }
-    public VertexPositionNormalColorTexture[] GenerateVertices(TerrainGrid grid)
+    public TerrainVertex[] GenerateVertices(TerrainGrid grid)
     {
         var vertexCount = (grid.Size + 1) * (grid.Size + 1);
-        var vertices = new VertexPositionNormalColorTexture[vertexCount];
+        var vertices = new TerrainVertex[vertexCount];
 
         var actualCellWidth = grid.TotalWidth / grid.Size;
         var actualCellHeight = grid.TotalHeight / grid.Size;
@@ -288,18 +200,11 @@ public class TerrainStandardVertexDraw : TerrainVertexDraw
 
                 var color = Color.Black;
 
-                vertices[index] = new VertexPositionNormalColorTexture
+                vertices[index] = new TerrainVertex
                 {
                     Position = position,
                     Normal = Vector3.UnitY,
                     TextureCoordinate = new Vector2((float)col / grid.Size, (float)row / grid.Size),
-                    Color = color,
-                    Color1 = color,
-                    Color2 = color,
-                    Color3 = color,
-                    Color4 = color,
-                    Color5 = color,
-                    Color6 = color,
                 };
             }
         }
@@ -312,7 +217,7 @@ public class TerrainStandardVertexDraw : TerrainVertexDraw
         new ListSerializerFactory().Register(registry);
         var nexYamlSerializerRegistry = new NexYamlSerializerRegistry();
         nexYamlSerializerRegistry.SerializerRegistry = new SerializerRegistry();
-        new NexSourceGenerated_Terrain1_ToolsVertexPositionNormalColorTextureHelper().Register(registry);
+        new NexSourceGenerated_Terrain1_ToolsTerrainVertexHelper().Register(registry);
         new ColorFactory().Register(registry);
         new VectorFactory().Register(registry);
         new Vector2Factory().Register(registry);
@@ -336,5 +241,5 @@ public class TerrainStandardVertexDraw : TerrainVertexDraw
 [DataContract]
 public class BufferWrapper
 {
-    public List<VertexPositionNormalColorTexture> VertexBuffer { get; set; }
+    public List<TerrainVertex> VertexBuffer { get; set; }
 }
