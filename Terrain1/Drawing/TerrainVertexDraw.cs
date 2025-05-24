@@ -61,14 +61,4 @@ public abstract class TerrainVertexDraw
     /// </summary>
     /// <param name="cell">The terrain grid cell that requires changes ( not normalized with <see cref="TerrainGrid.CellSize"/> )</param>
     public abstract void Rebuild(Int2 cell, IVertex vertex);
-
-    public virtual bool CanCommit { get; } = false;
-    [DataMember]
-    public virtual bool Save { get; set; }
-    
-
-    public virtual bool Load { get; set; }
-
-      public abstract void SaveTransaction();
-      public abstract void LoadTransaction();
 }

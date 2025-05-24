@@ -9,6 +9,11 @@ Meta:
 AssetFolders:
     -   Path: !dir Assets
     -   Path: !dir Effects
+    -   Path: !dir Assets
+    -   Path: !dir Assets
+    -   Path: !dir Assets
+    -   Path: !dir Assets
+    -   Path: !dir D:/Terrain1/Terrain1/Assets
 ResourceFolders:
     - !dir Resources
 OutputGroupDirectories: {}

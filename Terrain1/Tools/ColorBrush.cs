@@ -17,12 +17,8 @@ public class ColorBrush : TerrainEditorTool
     public override string UIName { get; set; } = nameof(ColorBrush);
     public Area Area { get; set; } = new Circle();
 
-    public TerrainMaskComputeColor Paint { get; set; } = new();
-    public override bool NeedsTransactionCommit { get => Terrain.TerrainVertexDraw.CanCommit && isDone; }
-    private bool isDone = false;
     public override void Update(GameTime gameTime)
     {
-        isDone = false;
         base.Update(gameTime);
         if (Area == null)
         {
@@ -38,18 +34,15 @@ public class ColorBrush : TerrainEditorTool
                 var cell = ConvertToGridCell(vector);
                 var cells = Area.GetAffectedCells(cell, Terrain.Size, Terrain.CellSize);
                 
-                var layerIndex = Paint.TerrainLayerIndex;
 
                 foreach (var c in cells)
                 {
-                    if(Terrain.TerrainVertexDraw is TerrainStandardVertexDraw standard)
-                        standard.SetVertexColor(c, layerIndex);
+                    if (Terrain.TerrainVertexDraw is TerrainStandardVertexDraw standard) ;
                 }
             }
         }
         else if (EditorInput.Mouse.IsButtonReleased(MouseButton.Left))
         {
-            isDone = true;
         }
     }
 

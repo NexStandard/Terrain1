@@ -1,22 +1,14 @@
-﻿using Microsoft.Win32;
-using NexYaml;
+﻿using NexYaml;
 using NexYaml.Serialization;
 using NexYaml.Serializers;
 using Stride.Core;
-using Stride.Core.Extensions;
 using Stride.Core.Mathematics;
 using Stride.Engine;
 using Stride.Graphics;
 using Stride.Rendering;
-using System;
-using System.Buffers;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 using Terrain;
 using Terrain1.Tools;
-using Terrain1.YamlExtensions;
 using static Stride.Graphics.Buffer;
 
 namespace Terrain1.Drawing;
@@ -35,66 +27,13 @@ public class TerrainStandardVertexDraw : TerrainVertexDraw
 
     public override void Rebuild()
     {
-        var vertexCount = (Grid.Size + 1) * (Grid.Size + 1);
         VertexCpuBuffer = Grid.GenerateVertices();
         var indices = Grid.GenerateIndices();
         GridRenderData.Size = Grid.Size;
         GridRenderData.CellSize = Grid.CellSize;
-        var indexBuffer = Stride.Graphics.Buffer.Index.New(TerrainGraphicsDevice, indices, GraphicsResourceUsage.Default);
-        GridRenderData.IndexBuffer = indexBuffer;
-        var vertexBuffer = Vertex.New(TerrainGraphicsDevice, VertexCpuBuffer.ToArray(), GraphicsResourceUsage.Default);
-        GridRenderData.VertexBuffer = vertexBuffer;
-        var mesh = new Mesh
-        {
-            Draw = new MeshDraw
-            {
-                PrimitiveType = PrimitiveType.TriangleList,
-                DrawCount = indices.Length,
-                IndexBuffer = new IndexBufferBinding(GridRenderData.IndexBuffer, true, indices.Length),
-                VertexBuffers = new[] { new VertexBufferBinding(GridRenderData.VertexBuffer, TerrainVertex.Layout, GridRenderData.VertexBuffer.ElementCount) },
-            },
-            MaterialIndex = 0,
-        };
-        var model = new Model()
-        {
-            Meshes = [mesh],
-        };
-
-        GridRenderData.ModelComponent.Model.Meshes.Clear();
-        GridRenderData.ModelComponent.Model.Meshes.Add(mesh);
-        var comp = Grid.Entity.Get<ModelComponent>();
-        if (comp == null)
-        {
-            comp = new ModelComponent()
-            {
-                Model = model
-            };
-            Grid.Entity.Add(comp);
-
-        }
-        else
-        {
-            comp.Model = model;
-        }
-        if (Grid.Material != null)
-        {
-            GridRenderData.ModelComponent.Materials.Clear();
-            GridRenderData.ModelComponent.Materials.Add(0, Grid.Material);
-            comp.Model.Meshes[0].MaterialIndex = 0;
-            comp.Model.Materials.Add(Grid.Material);
-        }
-    }
-    private void Rebuild(List<TerrainVertex> vertexPositionNormalColorTextures)
-    {
-        var vertexCount = (Grid.Size + 1) * (Grid.Size + 1);
-        VertexCpuBuffer = vertexPositionNormalColorTextures;
-        var indices = Grid.GenerateIndices();
-        GridRenderData.Size = Grid.Size;
-        GridRenderData.CellSize = Grid.CellSize;
-        var indexBuffer = Stride.Graphics.Buffer.Index.New(TerrainGraphicsDevice, indices, GraphicsResourceUsage.Default);
-        GridRenderData.IndexBuffer = indexBuffer;
-        var vertexBuffer = Vertex.New(TerrainGraphicsDevice, VertexCpuBuffer.ToArray(), GraphicsResourceUsage.Default);
-        GridRenderData.VertexBuffer = vertexBuffer;
+        GridRenderData.IndexBuffer = Index.New(TerrainGraphicsDevice, indices, GraphicsResourceUsage.Default);
+        GridRenderData.VertexBuffer = Vertex.New(TerrainGraphicsDevice, VertexCpuBuffer.ToArray(), GraphicsResourceUsage.Default);
+        
         var mesh = new Mesh
         {
             Draw = new MeshDraw
@@ -200,46 +139,14 @@ public class TerrainStandardVertexDraw : TerrainVertexDraw
 
                 var color = Color.Black;
 
-                vertices[index] = new TerrainVertex
+                vertices[index] = new TerrainVertex()
                 {
                     Position = position,
                     Normal = Vector3.UnitY,
-                    TextureCoordinate = new Vector2((float)col / grid.Size, (float)row / grid.Size),
                 };
             }
         }
 
         return vertices;
     }
-    private IYamlSerializerResolver Create()
-    {
-        var registry = NexYamlSerializerRegistry.Create(typeof(TerrainStandardVertexDraw).Assembly);
-        new ListSerializerFactory().Register(registry);
-        var nexYamlSerializerRegistry = new NexYamlSerializerRegistry();
-        nexYamlSerializerRegistry.SerializerRegistry = new SerializerRegistry();
-        new NexSourceGenerated_Terrain1_ToolsTerrainVertexHelper().Register(registry);
-        new ColorFactory().Register(registry);
-        new VectorFactory().Register(registry);
-        new Vector2Factory().Register(registry);
-        new NexSourceGenerated_Terrain1_DrawingBufferWrapperHelper().Register(registry);
-        return registry;
-    }
-    public override void SaveTransaction()
-    {
-        var registry = Create();
-        var w = new BufferWrapper()
-        {
-            VertexBuffer = VertexCpuBuffer
-        };
-        var s = Yaml.Write(w, options: registry);
-    }
-    public override void LoadTransaction()
-    {
-        var registry = Create();
-    }
-}
-[DataContract]
-public class BufferWrapper
-{
-    public List<TerrainVertex> VertexBuffer { get; set; }
 }

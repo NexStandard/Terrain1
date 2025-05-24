@@ -43,12 +43,10 @@ public class TerrainGrid : StartupScript
     public Material Material { get; set; }
     public TerrainVertexDraw TerrainVertexDraw { get; set; } = new TerrainStandardVertexDraw();
 
+    [DataMemberIgnore]
     public Dictionary<Int2, Color> VertexColors { get; } = new();
-    public Dictionary<Int2, Color> VertexColors1 { get; } = new();
     public Dictionary<Int2, int> VertexColorMaterialMapping { get; } = new();
-    [Display(Browsable=false)]
-    [DataMember()]
-    public List<HeightTest> HeightTest { get; set; } = new();
+
     [DataMember()]
     public List<KeyValuePair<Int2,float>> VertexHeightsE { get => VertexHeights.ToList(); set => VertexHeights = value.ToDictionary(x => x.Key, y => y.Value); }
     [DataMemberIgnore]
@@ -81,11 +79,10 @@ public class TerrainGrid : StartupScript
                 var color = Color.Black; // Default or calculated color
                 VertexColors[new Int2(col, row)] = color;
 
-                vertices[index] = new TerrainVertex
+                vertices[index] = new TerrainVertex()
                 {
                     Position = position,
                     Normal = Vector3.UnitY,
-                    TextureCoordinate = new Vector2((float)col / Size, (float)row / Size)
                 };
             }
         }
@@ -138,11 +135,10 @@ public class TerrainGrid : StartupScript
     {
         var key = new Int2(col, row);
         VertexHeights[key] = height;
-        HeightTest.Add(new HeightTest() { X = col, Y = row, Z = height });
-        File.WriteAllText("D:\\Count", HeightTest.Count.ToString());
-        
         ModifiedVertices.Add(key);
     }
+
+
     public float GetVertexHeight(int col, int row)
     {
         var key = new Int2(col, row);
@@ -253,12 +249,4 @@ public class TerrainGrid : StartupScript
 
 
     #endregion
-}
-[DataContract]
-[ContentSerializer(typeof(DataContentSerializer<HeightTest>))]
-public class HeightTest
-{
-    public int X;
-    public int Y;
-    public float Z;
 }

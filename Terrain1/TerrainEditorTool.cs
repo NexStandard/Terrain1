@@ -24,9 +24,6 @@ public abstract class TerrainEditorTool : StartupScript
 
     [DataMemberIgnore]
     public InputManager EditorInput {  get; internal set; }
-
-    public abstract bool NeedsTransactionCommit { get; }
-
     public bool Active { get; set; }
 
     [DataMemberRange(0, 100)]

@@ -91,16 +91,8 @@ public class TerrainGridProcessor : EntityProcessor<TerrainGrid, TerrainGridRend
             {
                 grid.Key.TerrainVertexDraw.Rebuild();
             }
-            
-            if(grid.Key.TerrainVertexDraw.Save || grid.Key.TerrainVertexDraw.Load)
-            {
-            }
         }
     }
-    
-    
-
-
 
     protected override void OnEntityComponentRemoved(Entity entity, TerrainGrid component, TerrainGridRenderData data)
     {

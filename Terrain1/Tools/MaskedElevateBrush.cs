@@ -16,7 +16,6 @@ public class MaskedElevateBrush : TerrainEditorTool
 {
     public Area Area { get; init; } = new Circle();
     public override string UIName { get; set; } = nameof(MaskedElevateBrush);
-    public override bool NeedsTransactionCommit { get => Terrain.TerrainVertexDraw.CanCommit && isDone; }
     private bool isDone = false;
     public override void Update(GameTime time)
     {

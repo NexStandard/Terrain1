@@ -19,12 +19,9 @@ public class ElevateBrush : TerrainEditorTool
 {
     public Area Area { get; init; } = new Circle();
     public override string UIName { get; set; } = nameof(ElevateBrush);
-    public override bool NeedsTransactionCommit { get => Terrain.TerrainVertexDraw.CanCommit && isDone; }
-    private bool isDone = false;
 
     public override void Update(GameTime time)
     {
-        isDone = false;
         base.Update(time);
 
         if (Area == null)
@@ -42,7 +39,6 @@ public class ElevateBrush : TerrainEditorTool
         }
         else if (EditorInput.Mouse.IsButtonReleased(MouseButton.Left))
         {
-            isDone = true;
         }
     }
 

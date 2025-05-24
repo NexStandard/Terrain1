@@ -19,11 +19,9 @@ public class SmoothBrush : TerrainEditorTool
     // Adjust these values to control the speed of smoothing
     public float SmoothingFactor { get; set; } = 2.0f; // Determines how fast the smoothing happens.
     public override string UIName { get; set; } = nameof(SmoothBrush);
-    public override bool NeedsTransactionCommit { get => Terrain.TerrainVertexDraw.CanCommit && isDone; }
-    private bool isDone = false;
+
     public override void Update(GameTime time)
     {
-        isDone = false;
         base.Update(time);
 
         if (Area == null)
@@ -41,7 +39,6 @@ public class SmoothBrush : TerrainEditorTool
         }
         else if (EditorInput.Mouse.IsButtonReleased(MouseButton.Left))
         {
-            isDone = true;
         }
     }
 
